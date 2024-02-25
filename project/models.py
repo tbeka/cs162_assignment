@@ -3,11 +3,11 @@ from datetime import datetime
 from flask_login import UserMixin
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)  # In a real app, ensure passwords are hashed
+    id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
-    lists = db.relationship('List', backref='user', lazy=True)
+    #lists = db.relationship('List', backref='user', lazy=True)
 
 class List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
