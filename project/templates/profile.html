@@ -1,45 +1,7 @@
-{% extends 'base.html' %}
-
-{% block title %}Home{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
-<h2>Welcome, {{ current_user.username }}!</h2>
-<p>This is your todo list dashboard.</p>
-
-{% for todo_list in todo_lists %}
-    <div class="list-group mb-3">
-        <a href="#!" class="list-group-item list-group-item-action active">
-            {{ todo_list.title }}
-        </a>
-        {% for item in todo_list.items %}
-            <div class="list-group">
-                <!-- Task -->
-                <a href="#!" class="list-group-item" onclick="toggleSubtasks('subtasks-{{ item.id }}')">
-                    {{ item.content }}
-                </a>
-                <!-- Sub-tasks -->
-                <div id="subtasks-{{ item.id }}" style="display: none;">
-                    {% for sub_item in item.children %}
-                        <a href="#!" class="list-group-item list-group-item-secondary">
-                            {{ sub_item.content }}
-                            <!-- For simplicity, not showing further nesting here, but you can extend this pattern -->
-                        </a>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-{% endfor %}
-
-<script>
-function toggleSubtasks(subtaskId) {
-    var element = document.getElementById(subtaskId);
-    if (element.style.display === "none") {
-        element.style.display = "block";
-    } else {
-        element.style.display = "none";
-    }
-}
-</script>
-
+<h1 class="title">
+  Welcome, {{ name }}!
+</h1>
 {% endblock %}
