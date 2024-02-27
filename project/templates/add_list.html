@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title">Add New List</h1>
+    <div class="column is-6 is-offset-3">
+        <form action="{{ url_for('main.add_list') }}" method="POST">
+            <div class="field">
+                <label class="label" for="title">List Title</label>
+                <div class="control">
+                    <input class="input" type="text" id="title" name="title" placeholder="Enter list title" required>
+                </div>
+            </div>
+            <div class="field is-grouped">
+                <div class="control">
+                    <button type="submit" class="button is-link">Submit</button>
+                </div>
+                <div class="control">
+                    <a href="{{ url_for('main.todo') }}" class="button is-link is-light">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
