@@ -25,6 +25,23 @@
     {% for list in lists %}
     <div class="box">
         <h2 class="title is-4" style="color: black;">{{ list.title }}</h2>
+        <!-- Form to Delete List -->
+        <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post">
+            <button type="submit" class="button is-danger">Delete List</button>
+        </form>
+        
+        <!-- Form to Add New Task -->
+        <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="text" name="taskContent" placeholder="Enter new task" required>
+                </div>
+            </div>
+            <div class="control">
+                <button type="submit" class="button is-small is-link">Add Task</button>
+            </div>
+        </form>
+
         <ul>
             {% for item in list.items if item.parent_id is none %}
                 {{ render_item(item) }}
@@ -48,6 +65,7 @@ function toggleSubItems(itemId) {
 {% macro render_item(item, level=0) %}
 <li>
     {{ item.content }}
+    <!-- Button to delete task could be added here -->
     {% if item.children %}
     <a href="javascript:void(0);" onclick="toggleSubItems({{ item.id }})">Toggle Sub-Items</a>
     <ul id="sub-items-{{ item.id }}" class="{{ 'is-hidden' if level >= 1 }}">
