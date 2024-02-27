@@ -24,7 +24,7 @@
     <!-- Existing Lists Display -->
     {% for list in lists %}
     <div class="box">
-        <h2 class="title is-4">{{ list.title }}</h2>
+        <h2 class="title is-4" style="color: black;">{{ list.title }}</h2>
         <ul>
             {% for item in list.items if item.parent_id is none %}
                 {{ render_item(item) }}

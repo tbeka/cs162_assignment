@@ -14,7 +14,7 @@ def index():
 @login_required
 def todo():
     user_lists = List.query.filter_by(user_id=current_user.id).all()
-    return render_template('todo.html', lists=user_lists)
+    return render_template('todo.html', name=current_user.name, lists=user_lists)
 
 # Route to add a new list (GET to display form, POST to submit form)
 @main.route('/todo/add-list', methods=['GET', 'POST'])
