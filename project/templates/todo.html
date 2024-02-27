@@ -1,7 +1,60 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
 <h1 class="title">
-  Welcome, {{ name }}!
+    Welcome, {{ name }}!
 </h1>
+
+<div class="container">
+    <!-- Form to Add New List -->
+    <div class="box">
+        <form action="{{ url_for('main.add_list') }}" method="post">
+            <div class="field">
+                <label class="label" for="title">New List Title</label>
+                <div class="control">
+                    <input class="input" type="text" id="title" name="title" placeholder="Enter new list title" required>
+                </div>
+            </div>
+            <div class="control">
+                <button type="submit" class="button is-link">Add List</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Existing Lists Display -->
+    {% for list in lists %}
+    <div class="box">
+        <h2 class="title is-4">{{ list.title }}</h2>
+        <ul>
+            {% for item in list.items if item.parent_id is none %}
+                {{ render_item(item) }}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+function toggleSubItems(itemId) {
+    var element = document.getElementById('sub-items-' + itemId);
+    if (element) {
+        element.classList.toggle('is-hidden');
+    }
+}
+</script>
+
 {% endblock %}
+
+{% macro render_item(item, level=0) %}
+<li>
+    {{ item.content }}
+    {% if item.children %}
+    <a href="javascript:void(0);" onclick="toggleSubItems({{ item.id }})">Toggle Sub-Items</a>
+    <ul id="sub-items-{{ item.id }}" class="{{ 'is-hidden' if level >= 1 }}">
+        {% for sub_item in item.children %}
+            {{ render_item(sub_item, level + 1) }}
+        {% endfor %}
+    </ul>
+    {% endif %}
+</li>
+{% endmacro %}
