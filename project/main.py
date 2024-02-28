@@ -59,11 +59,31 @@ def add_task(list_id):
         flash('Task content is required.', 'error')
     return redirect(url_for('main.todo'))
 
+
+
+@main.route('/update-list-title/<int:list_id>', methods=['POST'])
+@login_required
+def update_list_title(list_id):
+    list_to_update = List.query.get_or_404(list_id)
+    if list_to_update.user_id != current_user.id:
+        flash('Unauthorized action.', 'error')
+        return redirect(url_for('main.todo'))
+    
+    new_title = request.form.get('new_title')
+    if not new_title:
+        flash('A new title is required.', 'error')
+        return redirect(url_for('main.todo'))
+    
+    list_to_update.title = new_title
+    db.session.commit()
+    flash('List title updated successfully.', 'success')
+    return redirect(url_for('main.todo'))
+
+
 #TODO: add more routes.
 
 #expanding one task and seeing its subtasks
 # LISTS:
-# Change list deletion from button to a nice X icon
 # Add the ability to rename with a nice edit icon
 
 #TASKS:

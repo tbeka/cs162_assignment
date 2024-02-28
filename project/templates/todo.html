@@ -24,15 +24,20 @@
     <!-- Existing Lists Display -->
     {% for list in lists %}
     <div class="box" style="position: relative;">
-        <h2 class="title is-4" style="color: black;">{{ list.title }}</h2>
-        <input id="input-{{ list.id }}" type="text" class="input" style="display: none;" onblur="saveTitle('{{ list.id }}')">
-        <!-- Adjusted Delete Cross -->
-        <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post" style="position: absolute; top: 10px; right: 10px;">
-            <button class="delete" type="submit" style="cursor: pointer;"></button>
+        <!-- Display List Title or Input Field Based on Editing State -->
+        <div id="title-container-{{ list.id }}">
+            <h2 class="title is-4" style="color: black; display: inline-block;">{{ list.title }}</h2>
+            <a onclick="toggleEdit('{{ list.id }}')" class="button is-small is-light">Rename</a>
+        </div>
+        <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none;">
+            <input type="text" class="input is-small" name="new_title" value="{{ list.title }}">
+            <button type="submit" class="button is-small is-info">Save</button>
         </form>
-        <a onclick="toggleEdit('{{ list.id }}')" class="icon has-text-info" style="position: absolute; top: 10px; right: 40px; cursor: pointer;">
-            <i class="fas fa-edit"></i>
-        </a>
+    
+        <!-- Delete Button -->
+        <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post" style="position: absolute; top: 10px; right: 10px;">
+            <button type="submit" class="button is-small is-light">Delete</button>
+        </form>
         
         <!-- Form to Add New Task -->
         <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
@@ -63,30 +68,46 @@ function toggleSubItems(itemId) {
     }
 }
 
+
 function toggleEdit(listId) {
-    const titleElement = document.getElementById(`title-${listId}`);
-    const inputElement = document.getElementById(`input-${listId}`);
-    if (inputElement.style.display === "none") {
-        inputElement.style.display = "block";
-        titleElement.style.display = "none";
-        inputElement.value = titleElement.textContent;
-        inputElement.focus();
+    const titleContainer = document.getElementById(`title-container-${listId}`);
+    const editForm = document.getElementById(`edit-form-${listId}`);
+    if (editForm.style.display === "none") {
+        editForm.style.display = "block";
+        titleContainer.style.display = "none";
     } else {
-        inputElement.style.display = "none";
-        titleElement.style.display = "block";
+        editForm.style.display = "none";
+        titleContainer.style.display = "block";
     }
 }
 
-function saveTitle(listId) {
-    const inputElement = document.getElementById(`input-${listId}`);
-    const title = inputElement.value;
-    // Implement the save functionality here
-    // For example, make an AJAX call to update the list title in the database
-    console.log("Saving new title:", title, "for list ID:", listId);
-    // After saving, you can update the title display and hide the input field:
-    const titleElement = document.getElementById(`title-${listId}`);
-    titleElement.textContent = title;
-    toggleEdit(listId); // Hide the input field again
+function handleKeyPress(e, listId) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent form submission
+        const newTitle = document.getElementById(`input-${listId}`).value.trim();
+        // Update the title on the server
+        fetch(`{{ url_for('main.update_list_title', list_id=0) }}`.replace('0', listId), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ title: newTitle }),
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`title-${listId}`).textContent = newTitle;
+                toggleEdit(listId); // Hide the input field again
+            } else {
+                alert('Error updating list title');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Error updating list title');
+        });
+    }
 }
 </script>
 
