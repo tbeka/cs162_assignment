@@ -13,7 +13,7 @@ class List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    items = db.relationship('Item', backref='list', lazy=True)
+    items = db.relationship('Item', backref='list', lazy=True, cascade="all, delete-orphan")
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
