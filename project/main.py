@@ -62,7 +62,15 @@ def add_task(list_id):
 #TODO: add more routes.
 
 #expanding one task and seeing its subtasks
-#adding list
-#adding a task
-#deletinga a list
-#deleting a task
+# LISTS:
+# Change list deletion from button to a nice X icon
+# Add the ability to rename with a nice edit icon
+
+#TASKS:
+# Add the ability to rename with a nice edit icon
+# Add the ability to delete with a nice X icon
+# Add the ability to move between lists 
+# Add the ability to add subtasks
+# Add the ability to expand and collapse subtasks
+# Add the ability to add sub-subtasks
+# Add the ability to expand and collapse sub-subtasks
