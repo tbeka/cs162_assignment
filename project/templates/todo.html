@@ -27,7 +27,7 @@
         <h2 class="title is-4" style="color: black;">{{ list.title }}</h2>
         <!-- Adjusted Delete Cross -->
         <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post" style="position: absolute; top: 10px; right: 10px; color: rgb(202, 194, 194);">
-            <button class="delete is-small" type="submit" style="background: none; border: none; cursor: pointer;"></button>
+            <button class="delete is-small" type="submit" style="background: none; border: none; cursor: pointer; color: #cccccc;"></button>
         </form>
         
         <!-- Form to Add New Task -->
