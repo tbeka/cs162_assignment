@@ -55,7 +55,21 @@
 
         <ul>
             {% for item in list.items if item.parent_id is none %}
-                {{ render_item(item) }}
+                <li>
+                    {{ item.content }}
+                    <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')">Rename</a>
+                    <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
+                        <button type="submit" class="button is-small is-light">Delete</button>
+                    </form>
+                    <!-- Rename Task Form (Initially Hidden) -->
+                    <form action="{{ url_for('main.update_task', item_id=item.id) }}" method="post">
+                        {{ form.hidden_tag() }} <!-- For CSRF token -->
+                        <input type="text" name="new_content" value="{{ item.content }}">
+                        <button type="submit">Update Task</button>
+                    </form>
+                    {% if item.children %}
+                    {% endif %}
+                </li>
             {% endfor %}
         </ul>
     </div>
@@ -109,6 +123,15 @@ function handleKeyPress(e, listId) {
             console.error('Error:', error);
             alert('Error updating list title');
         });
+    }
+}
+
+function toggleEditTask(itemId) {
+    const editForm = document.getElementById(`edit-task-form-${itemId}`);
+    if (editForm.style.display === "none") {
+        editForm.style.display = "block";
+    } else {
+        editForm.style.display = "none";
     }
 }
 </script>

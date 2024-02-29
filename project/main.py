@@ -79,12 +79,37 @@ def update_list_title(list_id):
     flash('List title updated successfully.', 'success')
     return redirect(url_for('main.todo'))
 
+@main.route('/todo/update-task/<int:item_id>', methods=['POST'])
+@login_required
+def update_task(item_id):
+    item = Item.query.get_or_404(item_id)
+    if item.list.user_id != current_user.id:
+        flash('Unauthorized action.', 'error')
+        return redirect(url_for('main.todo'))
 
-#TODO: add more routes.
+    new_content = request.form.get('new_content')
+    if not new_content:
+        flash('Task content is required.', 'error')
+        return redirect(url_for('main.todo'))
 
-#expanding one task and seeing its subtasks
-# LISTS:
-# Add the ability to rename with a nice edit icon
+    item.content = new_content
+    db.session.commit()
+    flash('Task updated successfully!', 'success')
+    return redirect(url_for('main.todo'))
+
+@main.route('/todo/delete-task/<int:item_id>', methods=['POST'])
+@login_required
+def delete_task(item_id):
+    item = Item.query.get_or_404(item_id)
+    if item.list.user_id != current_user.id:
+        flash('Unauthorized action.', 'error')
+        return redirect(url_for('main.todo'))
+
+    db.session.delete(item)
+    db.session.commit()
+    flash('Task deleted successfully!', 'success')
+    return redirect(url_for('main.todo'))
+
 
 #TASKS:
 # Add the ability to rename with a nice edit icon
