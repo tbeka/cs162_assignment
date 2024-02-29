@@ -62,10 +62,9 @@
                         <button type="submit" class="button is-small is-light">Delete</button>
                     </form>
                     <!-- Rename Task Form (Initially Hidden) -->
-                    <form action="{{ url_for('main.update_task', item_id=item.id) }}" method="post">
-                        {{ form.hidden_tag() }} <!-- For CSRF token -->
-                        <input type="text" name="new_content" value="{{ item.content }}">
-                        <button type="submit">Update Task</button>
+                    <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task_content', item_id=item.id) }}" method="post" style="display: none;">
+                        <input type="text" class="input is-small" name="new_content" value="{{ item.content }}">
+                        <button type="submit" class="button is-small is-info">Save</button>
                     </form>
                     {% if item.children %}
                     {% endif %}
