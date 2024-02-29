@@ -62,7 +62,7 @@
                         <button type="submit" class="button is-small is-light">Delete</button>
                     </form>
                     <!-- Rename Task Form (Initially Hidden) -->
-                    <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task_content', item_id=item.id) }}" method="post" style="display: none;">
+                    <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" style="display: none;">
                         <input type="text" class="input is-small" name="new_content" value="{{ item.content }}">
                         <button type="submit" class="button is-small is-info">Save</button>
                     </form>
