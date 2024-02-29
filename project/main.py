@@ -111,6 +111,45 @@ def delete_task(item_id):
     return redirect(url_for('main.todo'))
 
 
+@main.route('/todo/add-subtask/<int:parent_id>', methods=['POST'])
+@login_required
+def add_subtask(parent_id):
+    subtask_content = request.form.get('subtaskContent')
+    if subtask_content:
+        new_subtask = Item(content=subtask_content, parent_id=parent_id, list_id=List.query.filter_by(user_id=current_user.id, id=parent_id).first().id)
+        db.session.add(new_subtask)
+        db.session.commit()
+        flash('Sub-task added successfully!', 'success')
+    else:
+        flash('Sub-task content is required.', 'error')
+    return redirect(url_for('main.todo'))
+
+@main.route('/todo/update-task/<int:item_id>', methods=['POST'])
+@login_required
+def update_task(item_id):
+    new_content = request.form.get('new_content')
+    item = Item.query.get_or_404(item_id)
+    if item.list.user_id != current_user.id:
+        flash('Unauthorized action.', 'error')
+        return redirect(url_for('main.todo'))
+    item.content = new_content
+    db.session.commit()
+    flash('Task updated successfully!', 'success')
+    return redirect(url_for('main.todo'))
+
+@main.route('/todo/delete-task/<int:item_id>', methods=['POST'])
+@login_required
+def delete_task(item_id):
+    item = Item.query.get_or_404(item_id)
+    if item.list.user_id != current_user.id:
+        flash('Unauthorized action.', 'error')
+        return redirect(url_for('main.todo'))
+    db.session.delete(item)
+    db.session.commit()
+    flash('Task deleted successfully!', 'success')
+    return redirect(url_for('main.todo'))
+
+
 #TASKS:
 # Add the ability to rename with a nice edit icon
 # Add the ability to delete with a nice X icon

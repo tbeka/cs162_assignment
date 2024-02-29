@@ -77,10 +77,13 @@
 
 <script>
 function toggleSubItems(itemId) {
-    var element = document.getElementById('sub-items-' + itemId);
-    if (element) {
-        element.classList.toggle('is-hidden');
-    }
+    const element = document.getElementById('sub-items-' + itemId);
+    element.classList.toggle('is-hidden');
+}
+
+function toggleEditTask(itemId) {
+    const editForm = document.getElementById(`edit-task-form-${itemId}`);
+    editForm.style.display = editForm.style.display === "none" ? "block" : "none";
 }
 
 
@@ -138,16 +141,33 @@ function toggleEditTask(itemId) {
 {% endblock %}
 
 {% macro render_item(item, level=0) %}
-<li>
+<li id="item-{{ item.id }}">
     {{ item.content }}
-    <!-- Button to delete task could be added here -->
+    <div class="task-actions">
+        <!-- Rename Button -->
+        <button onclick="toggleEditTask('{{ item.id }}')">Rename</button>
+        <!-- Delete Button -->
+        <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+    <!-- Rename Task Form (Initially Hidden) -->
+    <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" style="display: none;">
+        <input type="text" name="new_content" value="{{ item.content }}">
+        <button type="submit">Save</button>
+    </form>
     {% if item.children %}
-    <a href="javascript:void(0);" onclick="toggleSubItems({{ item.id }})">Toggle Sub-Items</a>
-    <ul id="sub-items-{{ item.id }}" class="{{ 'is-hidden' if level >= 1 }}">
-        {% for sub_item in item.children %}
-            {{ render_item(sub_item, level + 1) }}
-        {% endfor %}
-    </ul>
+        <button onclick="toggleSubItems('{{ item.id }}')">Expand</button>
+        <ul id="sub-items-{{ item.id }}" class="is-hidden">
+            {% for sub_item in item.children %}
+                {{ render_item(sub_item, level + 1) }}
+            {% endfor %}
+        </ul>
+        <!-- Add Sub-task Form -->
+        <form action="{{ url_for('main.add_subtask', parent_id=item.id) }}" method="post">
+            <input type="text" name="subtaskContent" placeholder="Enter new sub-task">
+            <button type="submit">Add Sub-task</button>
+        </form>
     {% endif %}
 </li>
 {% endmacro %}
