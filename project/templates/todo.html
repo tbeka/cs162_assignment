@@ -6,8 +6,11 @@
 </h1>
 
 <div class="container">
-    <!-- Form to Add New List -->
-    <div class="box">
+    <!-- Button to Show Add New List Form -->
+    <button class="button is-small is-info" onclick="toggleTaskForm()">Add New Task</button>
+    
+    <!-- Form to Add New List, Initially Hidden -->
+    <div id="add-task-form" class="box" style="display: none;">
         <form action="{{ url_for('main.add_list') }}" method="post">
             <div class="field">
                 <label class="label" for="title">New List Title</label>
@@ -35,40 +38,28 @@
             <input type="text" class="input is-small" name="new_title" value="{{ list.title }}">
             <button type="submit" class="button is-small is-info">Save</button>
         </form>
-    
+
         <!-- Delete Button -->
         <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post" style="position: absolute; top: 10px; right: 10px;">
             <button type="submit" class="button is-small is-light">Delete</button>
         </form>
-        
-        <!-- Form to Add New Task -->
-        <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
-            <div class="field">
-                <div class="control">
-                    <input class="input" type="text" name="taskContent" placeholder="Enter new task" required>
-                </div>
-            </div>
-            <div class="control">
-                <button type="submit" class="button is-small is-link">Add Task</button>
-            </div>
-        </form>
 
         <ul>
             {% for item in list.items if item.parent_id is none %}
-                <li>
-                    {{ item.content }}
-                    <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')">Rename</a>
-                    <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
-                        <button type="submit" class="button is-small is-light">Delete</button>
-                    </form>
-                    <!-- Rename Task Form (Initially Hidden) -->
-                    <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" style="display: none;">
-                        <input type="text" class="input is-small" name="new_content" value="{{ item.content }}">
-                        <button type="submit" class="button is-small is-info">Save</button>
-                    </form>
-                    {% if item.children %}
-                    {% endif %}
-                </li>
+            <li>
+                {{ item.content }}
+                <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')">Rename</a>
+                <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
+                    <button type="submit" class="button is-small is-light">Delete</button>
+                </form>
+                <!-- Rename Task Form (Initially Hidden) -->
+                <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" style="display: none;">
+                    <input type="text" class="input is-small" name="new_content" value="{{ item.content }}">
+                    <button type="submit" class="button is-small is-info">Save</button>
+                </form>
+                {% if item.children %}
+                {% endif %}
+            </li>
             {% endfor %}
         </ul>
     </div>
@@ -76,9 +67,9 @@
 </div>
 
 <script>
-function toggleSubItems(itemId) {
-    const element = document.getElementById('sub-items-' + itemId);
-    element.classList.toggle('is-hidden');
+function toggleTaskForm() {
+    const form = document.getElementById('add-task-form');
+    form.style.display = form.style.display === "none" ? "block" : "none";
 }
 
 function toggleEditTask(itemId) {
@@ -86,89 +77,12 @@ function toggleEditTask(itemId) {
     editForm.style.display = editForm.style.display === "none" ? "block" : "none";
 }
 
-
 function toggleEdit(listId) {
     const titleContainer = document.getElementById(`title-container-${listId}`);
     const editForm = document.getElementById(`edit-form-${listId}`);
-    if (editForm.style.display === "none") {
-        editForm.style.display = "block";
-        titleContainer.style.display = "none";
-    } else {
-        editForm.style.display = "none";
-        titleContainer.style.display = "block";
-    }
-}
-
-function handleKeyPress(e, listId) {
-    if (e.key === 'Enter') {
-        e.preventDefault(); // Prevent form submission
-        const newTitle = document.getElementById(`input-${listId}`).value.trim();
-        // Update the title on the server
-        fetch(`{{ url_for('main.update_list_title', list_id=0) }}`.replace('0', listId), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ title: newTitle }),
-            credentials: 'same-origin'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById(`title-${listId}`).textContent = newTitle;
-                toggleEdit(listId); // Hide the input field again
-            } else {
-                alert('Error updating list title');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('Error updating list title');
-        });
-    }
-}
-
-function toggleEditTask(itemId) {
-    const editForm = document.getElementById(`edit-task-form-${itemId}`);
-    if (editForm.style.display === "none") {
-        editForm.style.display = "block";
-    } else {
-        editForm.style.display = "none";
-    }
+    titleContainer.style.display = editForm.style.display === "none" ? "none" : "block";
+    editForm.style.display = editForm.style.display === "none" ? "block" : "none";
 }
 </script>
 
 {% endblock %}
-
-{% macro render_item(item, level=0) %}
-<li id="item-{{ item.id }}">
-    {{ item.content }}
-    <div class="task-actions">
-        <!-- Rename Button -->
-        <button onclick="toggleEditTask('{{ item.id }}')">Rename</button>
-        <!-- Delete Button -->
-        <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
-            <button type="submit">Delete</button>
-        </form>
-        <!-- Add Sub-task Form -->
-        <form action="{{ url_for('main.add_subtask', parent_id=item.id) }}" method="post">
-            <input type="text" name="subtaskContent" placeholder="Enter new sub-task">
-            <button type="submit">Add Sub-task</button>
-        </form>
-    </div>
-    <!-- Rename Task Form (Initially Hidden) -->
-    <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" style="display: none;">
-        <input type="text" name="new_content" value="{{ item.content }}">
-        <button type="submit">Save</button>
-    </form>
-    {% if item.children %}
-        <button onclick="toggleSubItems('{{ item.id }}')">Expand</button>
-        <ul id="sub-items-{{ item.id }}" class="is-hidden">
-            {% for sub_item in item.children %}
-                {{ render_item(sub_item, level + 1) }}
-            {% endfor %}
-        </ul>
-        
-    {% endif %}
-</li>
-{% endmacro %}
