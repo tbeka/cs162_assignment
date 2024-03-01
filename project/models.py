@@ -20,6 +20,9 @@ class Item(db.Model):
     content = db.Column(db.String(200), nullable=False)
     list_id = db.Column(db.Integer, db.ForeignKey('list.id'), nullable=False)
     parent_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=True)
-    children = db.relationship('Item', backref=db.backref('parent', remote_side=[id]), lazy=True)
+    children = db.relationship('Item', 
+                               backref=db.backref('parent', remote_side=[id]), 
+                               lazy=True, 
+                               cascade="all, delete-orphan")
     is_complete = db.Column(db.Boolean, default=False)
     is_collapsed = db.Column(db.Boolean, default=False)
