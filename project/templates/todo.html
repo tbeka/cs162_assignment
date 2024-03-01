@@ -87,7 +87,8 @@
                 <!-- Subtasks display -->
                 {% if item.children %}
                     <div id="subtasks-{{ item.id }}" style="display: none;">
-                        {% include 'subtasks.html' %}
+                        {% set sub_items = item.children %}
+                        {% include 'subtasks_template.html' %}
                     </div>
                 {% endif %} 
             </li>

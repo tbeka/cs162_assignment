@@ -1,6 +1,6 @@
 <!-- Assuming 'sub_items' are passed to this template for rendering -->
 <ul>
-    {% for sub_item in item.children %}
+    {% for sub_item in sub_items %}
     <li style="list-style-type: circle;">
         {{ sub_item.content }}
         <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_item.id }}')">Rename</a>
@@ -18,7 +18,8 @@
         </div>
         <!-- Recursive inclusion for sub-subtasks -->
         {% if sub_item.children %}
-            {% include 'subtasks_template.html' with sub_items=sub_item.children %}
+            {% set sub_items = sub_item.children %}
+            {% include 'subtasks.html' %}
         {% endif %}
     </li>
     {% endfor %}
