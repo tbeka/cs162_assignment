@@ -98,7 +98,9 @@
 
 <script>
 function toggleTaskForm(listId) {
-    const form = document.getElementById('add-task-form-' + listId);
+    // Check if listId is provided, if not, use the ID for the "Add New List" form
+    var formId = listId ? 'add-task-form-' + listId : 'add-task-form';
+    const form = document.getElementById(formId);
     form.style.display = form.style.display === "none" ? "block" : "none";
 }
 
