@@ -104,7 +104,13 @@
                             {% if sub_item.children %}
                                 <ul style="margin-left: 20px;">
                                     {% for sub_sub_item in sub_item.children %}
-                                    <li style="list-style-type: square;">{{ sub_sub_item.content }}</li>
+                                    <li style="list-style-type: square;">
+                                        {{ sub_sub_item.content }}
+                                        <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_sub_item.id }}')">Rename</a>
+                                        <form action="{{ url_for('main.delete_task', item_id=sub_sub_item.id) }}" method="post" style="display: inline;">
+                                            <button type="submit" class="button is-small is-light">Delete</button>
+                                        </form>
+                                    </li>
                                     {% endfor %}
                                 </ul>
                             {% endif %}
