@@ -1,0 +1,25 @@
+<!-- Assuming 'sub_items' are passed to this template for rendering -->
+<ul>
+    {% for sub_item in sub_items %}
+    <li style="list-style-type: circle;">
+        {{ sub_item.content }}
+        <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_item.id }}')">Rename</a>
+        <form action="{{ url_for('main.delete_task', item_id=sub_item.id) }}" method="post" style="display: inline;">
+            <button type="submit" class="button is-small is-light">Delete</button>
+        </form>
+        <button class="button is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ sub_item.id }}')">Add Subtask</button>
+        <!-- Form to Add Sub-subtask, Initially Hidden -->
+        <div id="add-subtask-form-{{ sub_item.id }}" style="display: none;">
+            <form action="{{ url_for('main.add_task', list_id=sub_item.list_id) }}" method="post">
+                <input type="hidden" name="parent_id" value="{{ sub_item.id }}">
+                <input class="input" type="text" name="taskContent" placeholder="Enter new sub-subtask" required>
+                <button type="submit" class="button is-small is-link">Add Subtask</button>
+            </form>
+        </div>
+        <!-- Recursive inclusion for sub-subtasks -->
+        {% if sub_item.children %}
+            {% include 'subtasks_template.html' with sub_items=sub_item.children %}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
