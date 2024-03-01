@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="title">
-    Welcome, {{ name }}!
-</h1>
 
+<section class="section">
 <div class="container">
+    <h1 class="title">
+        Welcome, {{ name }}!
+    </h1>
+
+
     <!-- Button to Show Add New List Form -->
-    <button class="button is-small is-info" onclick="toggleTaskForm()" style="margin-bottom: 20px;">Add New List</button>
+    <div class="field has-text-right">
+        <button class="button is-info" onclick="toggleTaskForm()">Add New List</button>
+    </div>
     
     <!-- Form to Add New List, Initially Hidden -->
     <div id="add-task-form" class="box" style="display: none;">
@@ -24,111 +29,74 @@
         </form>
     </div>
 
-    <!-- Existing Lists Display -->
-    {% for list in lists %}
-    <div class="box" style="position: relative; margin-bottom: 20px;">
-        <!-- Display List Title -->
-        <div id="title-container-{{ list.id }}">
-            <h2 class="title is-4" style="color: black; display: inline-block;">{{ list.title }}</h2>
-            <a onclick="toggleEdit('{{ list.id }}')" class="button is-small is-light">Rename</a>
-        </div>
-        <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none;">
-            <input type="text" class="input is-small" name="new_title" value="{{ list.title }}">
-            <button type="submit" class="button is-small is-info">Save</button>
-        </form>
-
-        <!-- Delete Button for List -->
-        <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post" style="position: absolute; top: 10px; right: 10px;">
-            <button type="submit" class="button is-small is-light">Delete</button>
-        </form>
-
-        <!-- Button to Show Add New Task Form for each List -->
-        <button class="button is-small is-info" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
-        
-        <!-- Form to Add New Task, Initially Hidden, for each List -->
-        <div id="add-task-form-{{ list.id }}" style="display: none;">
-            <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
-                <div class="field">
-                    <div class="control">
-                        <input class="input" type="text" name="taskContent" placeholder="Enter new task" required>
-                    </div>
-                </div>
-                <div class="control">
-                    <button type="submit" class="button is-small is-link">Add Task</button>
-                </div>
-            </form>
-        </div>
-
-        <ul>
-            {% for item in list.items if item.parent_id is none %}
-            <li>
-                {{ item.content }}
-                {% if item.children %}
-                <button onclick="toggleVisibility('subtasks-{{ item.id }}')">Expand/Collapse</button>
-                {% endif %}
-                <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')">Rename</a>
-                <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
-                    <button type="submit" class="button is-small is-light">Delete</button>
-                </form>
-                <!-- Rename Task Form (Initially Hidden) -->
-                <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" style="display: none;">
-                    <input type="text" class="input is-small" name="new_content" value="{{ item.content }}">
-                    <button type="submit" class="button is-small is-info">Save</button>
-                </form>
-                <button class="button is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ item.id }}')">Add Subtask</button>
-                <!-- Form to Add Subtask, Initially Hidden -->
-                <div id="add-subtask-form-{{ item.id }}" style="display: none;">
-                    <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
-                        <input type="hidden" name="parent_id" value="{{ item.id }}">
-                        <input class="input" type="text" name="taskContent" placeholder="Enter new subtask" required>
-                        <button type="submit" class="button is-small is-link">Add Subtask</button>
+    <div class="box">
+        <article class="media">
+            <div class="media-content">
+                <div class="content">
+                    <strong>{{ list.title }}</strong>
+                    <br>
+                    <a onclick="toggleEdit('{{ list.id }}')" class="button is-small is-light">Rename</a>
+                    <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post" class="is-inline">
+                        <button type="submit" class="button is-small is-danger is-outlined">Delete</button>
                     </form>
+                    <button class="button is-small is-info" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
                 </div>
-                <!-- Subtasks display -->
-                {% if item.children %}
-                <!-- Assuming 'sub_items' are passed to this template for rendering -->
-                    <ul id="subtasks-{{ item.id }}" style="display: none; margin-left: 20px;">
-                        {% for sub_item in item.children %}
-                        <li style="list-style-type: circle;">
-                            {{ sub_item.content }}
-                            <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_item.id }}')">Rename</a>
-                            <form action="{{ url_for('main.delete_task', item_id=sub_item.id) }}" method="post" style="display: inline;">
-                                <button type="submit" class="button is-small is-light">Delete</button>
-                            </form>
-                            <button class="button is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ sub_item.id }}')">Add Subtask</button>
-                            <!-- Form to Add Sub-subtask, Initially Hidden -->
-                            <div id="add-subtask-form-{{ sub_item.id }}" style="display: none;">
-                                <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
-                                    <input type="hidden" name="parent_id" value="{{ sub_item.id }}">
-                                    <input class="input" type="text" name="taskContent" placeholder="Enter new sub-subtask" required>
-                                    <button type="submit" class="button is-small is-link">Add Subtask</button>
-                                </form>
-                            </div>
-                            <!-- Sub-subtasks display, if any -->
-                            {% if sub_item.children %}
-                                <button onclick="toggleVisibility('subsubtasks-{{ sub_item.id }}')">Expand/Collapse</button>
-                                <ul id="subsubtasks-{{ sub_item.id }}" style="display: none; margin-left: 20px;">
-                                    {% for sub_sub_item in sub_item.children %}
-                                    <li style="list-style-type: square;">
-                                        {{ sub_sub_item.content }}
-                                        <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_sub_item.id }}')">Rename</a>
-                                        <form action="{{ url_for('main.delete_task', item_id=sub_sub_item.id) }}" method="post" style="display: inline;">
-                                            <button type="submit" class="button is-small is-light">Delete</button>
-                                        </form>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %} 
-            </li>
-            {% endfor %}
-        </ul>
+            </div>
+        </article>
+
+        {% for item in list.items if item.parent_id is none %}
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>{{ item.content }}</strong>
+                            <br>
+                            <small>
+                                <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')">Rename</a> |
+                                <a href="javascript:void(0);" onclick="toggleVisibility('subtasks-{{ item.id }}')">Expand/Collapse</a>
+                            </small>
+                        </p>
+                    </div>
+                    <nav class="level is-mobile">
+                        <div class="level-left">
+                            <button class="button is-small is-info" onclick="toggleAddTaskForm('add-subtask-form-{{ item.id }}')">Add Subtask</button>
+                        </div>
+                    </nav>
+                </div>
+            </article>
+
+            <!-- Subtasks -->
+            <div id="subtasks-{{ item.id }}" style="display: none; margin-top: 10px;">
+                {% for sub_item in item.children %}
+                <article class="media">
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>{{ sub_item.content }}</strong>
+                                <small>
+                                    <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_item.id }}')">Rename</a> |
+                                    <a href="javascript:void(0);" onclick="toggleVisibility('subsubtasks-{{ sub_item.id }}')">Expand/Collapse</a>
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Sub-subtasks -->
+                <div id="subsubtasks-{{ sub_item.id }}" style="display: none; margin-left: 20px;">
+                    {% for sub_sub_item in sub_item.children %}
+                    <p>{{ sub_sub_item.content }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
     {% endfor %}
 </div>
+</section>
 
 <script>
 function toggleTaskForm(listId) {
