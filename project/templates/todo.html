@@ -72,7 +72,22 @@
                     <input type="text" class="input is-small" name="new_content" value="{{ item.content }}">
                     <button type="submit" class="button is-small is-info">Save</button>
                 </form>
+                <button class="button is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ item.id }}')">Add Subtask</button>
+                <!-- Form to Add Subtask, Initially Hidden -->
+                <div id="add-subtask-form-{{ item.id }}" style="display: none;">
+                    <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
+                        <input type="hidden" name="parent_id" value="{{ item.id }}">
+                        <input class="input" type="text" name="taskContent" placeholder="Enter new subtask" required>
+                        <button type="submit" class="button is-small is-link">Add Subtask</button>
+                    </form>
+                </div>
+                <!-- Subtasks display -->
                 {% if item.children %}
+                    <ul>
+                        {% for sub_item in item.children %}
+                            <li>{{ sub_item.content }}</li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </li>
             {% endfor %}
@@ -102,6 +117,11 @@ function toggleEdit(listId) {
         editForm.style.display = "none";
         titleContainer.style.display = "block";
     }
+}
+
+function toggleAddTaskForm(formId) {
+    var form = document.getElementById(formId);
+    form.style.display = form.style.display === "none" ? "block" : "none";
 }
 </script>
 

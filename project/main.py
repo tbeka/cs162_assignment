@@ -45,18 +45,21 @@ def delete_list(list_id):
     flash('List deleted successfully!', 'success')
     return redirect(url_for('main.todo'))
 
-# Add a task to a list
 @main.route('/todo/add-task/<int:list_id>', methods=['POST'])
 @login_required
 def add_task(list_id):
     content = request.form.get('taskContent')
+    parent_id = request.form.get('parent_id', None)  # Get parent_id, default to None if not provided
+
     if content:
-        new_item = Item(content=content, list_id=list_id)
+        # Create a new item with the content, list_id, and optional parent_id
+        new_item = Item(content=content, list_id=list_id, parent_id=parent_id)
         db.session.add(new_item)
         db.session.commit()
         flash('Task added successfully!', 'success')
     else:
         flash('Task content is required.', 'error')
+    
     return redirect(url_for('main.todo'))
 
 
@@ -110,19 +113,6 @@ def delete_task(item_id):
     flash('Task deleted successfully!', 'success')
     return redirect(url_for('main.todo'))
 
-
-@main.route('/todo/add-subtask/<int:parent_id>', methods=['POST'])
-@login_required
-def add_subtask(parent_id):
-    subtask_content = request.form.get('subtaskContent')
-    if subtask_content:
-        new_subtask = Item(content=subtask_content, parent_id=parent_id, list_id=List.query.filter_by(user_id=current_user.id, id=parent_id).first().id)
-        db.session.add(new_subtask)
-        db.session.commit()
-        flash('Sub-task added successfully!', 'success')
-    else:
-        flash('Sub-task content is required.', 'error')
-    return redirect(url_for('main.todo'))
 
 
 #TASKS:
