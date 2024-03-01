@@ -83,9 +83,9 @@
                 </div>
                 <!-- Subtasks display -->
                 {% if item.children %}
-                    <ul>
+                    <ul style="margin-left: 20px;">
                         {% for sub_item in item.children %}
-                            <li>{{ sub_item.content }}</li>
+                        <li style="list-style-type: circle;">{{ sub_item.content }}</li>
                         {% endfor %}
                     </ul>
                 {% endif %}
