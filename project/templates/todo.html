@@ -63,6 +63,9 @@
             {% for item in list.items if item.parent_id is none %}
             <li>
                 {{ item.content }}
+                {% if item.children %}
+                <button onclick="toggleVisibility('subtasks-{{ item.id }}')">Expand/Collapse</button>
+                {% endif %}
                 <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')">Rename</a>
                 <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
                     <button type="submit" class="button is-small is-light">Delete</button>
@@ -83,7 +86,7 @@
                 </div>
                 <!-- Subtasks display -->
                 {% if item.children %}
-                    <ul style="margin-left: 20px;">
+                    <ul id="subtasks-{{ item.id }}" style="display: none; margin-left: 20px;">
                         {% for sub_item in item.children %}
                         <li style="list-style-type: circle;">
                             {{ sub_item.content }}
@@ -102,7 +105,8 @@
                             </div>
                             <!-- Sub-subtasks display, if any -->
                             {% if sub_item.children %}
-                                <ul style="margin-left: 20px;">
+                                <button onclick="toggleVisibility('subsubtasks-{{ sub_item.id }}')">Expand/Collapse</button>
+                                <ul id="subsubtasks-{{ sub_item.id }}" style="display: none; margin-left: 20px;">
                                     {% for sub_sub_item in sub_item.children %}
                                     <li style="list-style-type: square;">
                                         {{ sub_sub_item.content }}
@@ -154,6 +158,17 @@ function toggleAddTaskForm(formId) {
     var form = document.getElementById(formId);
     form.style.display = form.style.display === "none" ? "block" : "none";
 }
+
+function toggleVisibility(elementId) {
+    var element = document.getElementById(elementId);
+    if (element.style.display === "none") {
+        element.style.display = "block";
+    } else {
+        element.style.display = "none";
+    }
+}
 </script>
+
+
 
 {% endblock %}
