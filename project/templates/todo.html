@@ -150,6 +150,11 @@ function toggleEditTask(itemId) {
         <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
             <button type="submit">Delete</button>
         </form>
+        <!-- Add Sub-task Form -->
+        <form action="{{ url_for('main.add_subtask', parent_id=item.id) }}" method="post">
+            <input type="text" name="subtaskContent" placeholder="Enter new sub-task">
+            <button type="submit">Add Sub-task</button>
+        </form>
     </div>
     <!-- Rename Task Form (Initially Hidden) -->
     <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" style="display: none;">
@@ -163,11 +168,7 @@ function toggleEditTask(itemId) {
                 {{ render_item(sub_item, level + 1) }}
             {% endfor %}
         </ul>
-        <!-- Add Sub-task Form -->
-        <form action="{{ url_for('main.add_subtask', parent_id=item.id) }}" method="post">
-            <input type="text" name="subtaskContent" placeholder="Enter new sub-task">
-            <button type="submit">Add Sub-task</button>
-        </form>
+        
     {% endif %}
 </li>
 {% endmacro %}
