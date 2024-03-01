@@ -7,7 +7,7 @@
 
 <div class="container">
     <!-- Button to Show Add New List Form -->
-    <button class="button is-small is-info" onclick="toggleTaskForm()">Add New Task</button>
+    <button class="button is-small is-info" onclick="toggleTaskForm()" style="margin-bottom: 20px;">Add New List</button>
     
     <!-- Form to Add New List, Initially Hidden -->
     <div id="add-task-form" class="box" style="display: none;">
@@ -26,12 +26,10 @@
 
     <!-- Existing Lists Display -->
     {% for list in lists %}
-    <div class="box" style="position: relative;">
-        <!-- Display List Title or Input Field Based on Editing State -->
+    <div class="box" style="position: relative; margin-bottom: 20px;">
+        <!-- Display List Title -->
         <div id="title-container-{{ list.id }}">
             <h2 class="title is-4" style="color: black; display: inline-block;">{{ list.title }}</h2>
-        </div>
-        <div style="position: absolute; top: 10px; right: 70px;">
             <a onclick="toggleEdit('{{ list.id }}')" class="button is-small is-light">Rename</a>
         </div>
         <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none;">
@@ -39,10 +37,27 @@
             <button type="submit" class="button is-small is-info">Save</button>
         </form>
 
-        <!-- Delete Button -->
+        <!-- Delete Button for List -->
         <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post" style="position: absolute; top: 10px; right: 10px;">
             <button type="submit" class="button is-small is-light">Delete</button>
         </form>
+
+        <!-- Button to Show Add New Task Form for each List -->
+        <button class="button is-small is-info" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
+        
+        <!-- Form to Add New Task, Initially Hidden, for each List -->
+        <div id="add-task-form-{{ list.id }}" style="display: none;">
+            <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" name="taskContent" placeholder="Enter new task" required>
+                    </div>
+                </div>
+                <div class="control">
+                    <button type="submit" class="button is-small is-link">Add Task</button>
+                </div>
+            </form>
+        </div>
 
         <ul>
             {% for item in list.items if item.parent_id is none %}
@@ -67,8 +82,8 @@
 </div>
 
 <script>
-function toggleTaskForm() {
-    const form = document.getElementById('add-task-form');
+function toggleTaskForm(listId) {
+    const form = document.getElementById('add-task-form-' + listId);
     form.style.display = form.style.display === "none" ? "block" : "none";
 }
 
@@ -80,8 +95,13 @@ function toggleEditTask(itemId) {
 function toggleEdit(listId) {
     const titleContainer = document.getElementById(`title-container-${listId}`);
     const editForm = document.getElementById(`edit-form-${listId}`);
-    titleContainer.style.display = editForm.style.display === "none" ? "none" : "block";
-    editForm.style.display = editForm.style.display === "none" ? "block" : "none";
+    if (editForm.style.display === "none") {
+        editForm.style.display = "block";
+        titleContainer.style.display = "none";
+    } else {
+        editForm.style.display = "none";
+        titleContainer.style.display = "block";
+    }
 }
 </script>
 
