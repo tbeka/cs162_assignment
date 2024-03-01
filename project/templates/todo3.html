@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <h1 class="title">
     Welcome, {{ name }}!
 </h1>
 
 <div class="container">
-    <!-- Button to Show Add New List Form -->
-    <button class="button is-small is-info" onclick="toggleTaskForm()" style="margin-bottom: 20px;">Add New List</button>
+    <button class="button is-small is-info mb-4" onclick="toggleTaskForm()">Add New List</button>
     
-    <!-- Form to Add New List, Initially Hidden -->
-    <div id="add-task-form" class="box" style="display: none;">
+    <div id="add-task-form" class="box is-hidden">
         <form action="{{ url_for('main.add_list') }}" method="post">
             <div class="field">
                 <label class="label" for="title">New List Title</label>
@@ -25,29 +22,24 @@
         </form>
     </div>
 
-    <!-- Existing Lists Display -->
     {% for list in lists %}
     <div class="box" style="position: relative; margin-bottom: 20px;">
-        <!-- Display List Title -->
         <div id="title-container-{{ list.id }}">
-            <h2 class="title is-4" style="color: black; display: inline-block;">{{ list.title }}</h2>
+            <h2 class="title is-4 has-text-black" style="display: inline-block;">{{ list.title }}</h2>
             <a onclick="toggleEdit('{{ list.id }}')" class="button is-small is-light">Rename</a>
         </div>
-        <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none;">
+        <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" class="is-hidden">
             <input type="text" class="input is-small" name="new_title" value="{{ list.title }}">
             <button type="submit" class="button is-small is-info">Save</button>
         </form>
 
-        <!-- Delete Button for List -->
         <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post" style="position: absolute; top: 10px; right: 10px;">
             <button type="submit" class="button is-small is-light">Delete</button>
         </form>
 
-        <!-- Button to Show Add New Task Form for each List -->
         <button class="button is-small is-info" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
         
-        <!-- Form to Add New Task, Initially Hidden, for each List -->
-        <div id="add-task-form-{{ list.id }}" style="display: none;">
+        <div id="add-task-form-{{ list.id }}" class="is-hidden">
             <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
                 <div class="field">
                     <div class="control">
@@ -71,24 +63,20 @@
                 <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
                     <button type="submit" class="button is-small is-light">Delete</button>
                 </form>
-                <!-- Rename Task Form (Initially Hidden) -->
-                <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" style="display: none;">
+                <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" class="is-hidden">
                     <input type="text" class="input is-small" name="new_content" value="{{ item.content }}">
                     <button type="submit" class="button is-small is-info">Save</button>
                 </form>
                 <button class="button is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ item.id }}')">Add Subtask</button>
-                <!-- Form to Add Subtask, Initially Hidden -->
-                <div id="add-subtask-form-{{ item.id }}" style="display: none;">
+                <div id="add-subtask-form-{{ item.id }}" class="is-hidden">
                     <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
                         <input type="hidden" name="parent_id" value="{{ item.id }}">
                         <input class="input" type="text" name="taskContent" placeholder="Enter new subtask" required>
                         <button type="submit" class="button is-small is-link">Add Subtask</button>
                     </form>
                 </div>
-                <!-- Subtasks display -->
                 {% if item.children %}
-                <!-- Assuming 'sub_items' are passed to this template for rendering -->
-                    <ul id="subtasks-{{ item.id }}" style="display: none; margin-left: 20px;">
+                    <ul id="subtasks-{{ item.id }}" class="is-hidden" style="margin-left: 20px;">
                         {% for sub_item in item.children %}
                         <li style="list-style-type: circle;">
                             {{ sub_item.content }}
@@ -97,18 +85,16 @@
                                 <button type="submit" class="button is-small is-light">Delete</button>
                             </form>
                             <button class="button is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ sub_item.id }}')">Add Subtask</button>
-                            <!-- Form to Add Sub-subtask, Initially Hidden -->
-                            <div id="add-subtask-form-{{ sub_item.id }}" style="display: none;">
+                            <div id="add-subtask-form-{{ sub_item.id }}" class="is-hidden">
                                 <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
                                     <input type="hidden" name="parent_id" value="{{ sub_item.id }}">
                                     <input class="input" type="text" name="taskContent" placeholder="Enter new sub-subtask" required>
                                     <button type="submit" class="button is-small is-link">Add Subtask</button>
                                 </form>
                             </div>
-                            <!-- Sub-subtasks display, if any -->
                             {% if sub_item.children %}
                                 <button onclick="toggleVisibility('subsubtasks-{{ sub_item.id }}')">Expand/Collapse</button>
-                                <ul id="subsubtasks-{{ sub_item.id }}" style="display: none; margin-left: 20px;">
+                                <ul id="subsubtasks-{{ sub_item.id }}" class="is-hidden" style="margin-left: 20px;">
                                     {% for sub_sub_item in sub_item.children %}
                                     <li style="list-style-type: square;">
                                         {{ sub_sub_item.content }}
@@ -133,44 +119,32 @@
 
 <script>
 function toggleTaskForm(listId) {
-    // Check if listId is provided, if not, use the ID for the "Add New List" form
     var formId = listId ? 'add-task-form-' + listId : 'add-task-form';
     const form = document.getElementById(formId);
-    form.style.display = form.style.display === "none" ? "block" : "none";
+    form.classList.toggle('is-hidden');
 }
 
 function toggleEditTask(itemId) {
     const editForm = document.getElementById(`edit-task-form-${itemId}`);
-    editForm.style.display = editForm.style.display === "none" ? "block" : "none";
+    editForm.classList.toggle('is-hidden');
 }
 
 function toggleEdit(listId) {
     const titleContainer = document.getElementById(`title-container-${listId}`);
     const editForm = document.getElementById(`edit-form-${listId}`);
-    if (editForm.style.display === "none") {
-        editForm.style.display = "block";
-        titleContainer.style.display = "none";
-    } else {
-        editForm.style.display = "none";
-        titleContainer.style.display = "block";
-    }
+    titleContainer.classList.toggle('is-hidden');
+    editForm.classList.toggle('is-hidden');
 }
 
 function toggleAddTaskForm(formId) {
     var form = document.getElementById(formId);
-    form.style.display = form.style.display === "none" ? "block" : "none";
+    form.classList.toggle('is-hidden');
 }
 
 function toggleVisibility(elementId) {
     var element = document.getElementById(elementId);
-    if (element.style.display === "none") {
-        element.style.display = "block";
-    } else {
-        element.style.display = "none";
-    }
+    element.classList.toggle('is-hidden');
 }
 </script>
-
-
 
 {% endblock %}
