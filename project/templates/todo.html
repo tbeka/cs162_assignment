@@ -29,22 +29,23 @@
     {% for list in lists %}
     <div class="box" style="position: relative; margin-bottom: 20px;">
         <!-- Display List Title -->
-        <div id="title-container-{{ list.id }}">
-            <h2 class="title is-4" style="color: black; display: inline-block;">{{ list.title }}</h2>
-            <a onclick="toggleEdit('{{ list.id }}')" class="button is-small is-light">Rename</a>
+        <div class="content">
+            <div id="title-container-{{ list.id }}">
+                <h2 class="title is-4" style="color: black; display: inline-block;">{{ list.title }}</h2>
+                <a onclick="toggleEdit('{{ list.id }}')" class="button is-light is-small">Rename</a>
+            </div>
+            <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none;">
+                <input type="text" class="input is-small" name="new_title" value="{{ list.title }}">
+                <button type="submit" class="button is-info is-small">Save</button>
+            </form>
         </div>
-        <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none;">
-            <input type="text" class="input is-small" name="new_title" value="{{ list.title }}">
-            <button type="submit" class="button is-small is-info">Save</button>
-        </form>
-
-        <!-- Delete Button for List -->
-        <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post" style="position: absolute; top: 10px; right: 10px;">
-            <button type="submit" class="button is-small is-light">Delete</button>
-        </form>
-
-        <!-- Button to Show Add New Task Form for each List -->
-        <button class="button is-small is-info" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
+        
+        <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
+            <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post">
+                <button type="submit" class="button is-light is-small">Delete</button>
+            </form>
+            <button class="button is-info is-small" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
+        </div>
         
         <!-- Form to Add New Task, Initially Hidden, for each List -->
         <div id="add-task-form-{{ list.id }}" style="display: none;">
