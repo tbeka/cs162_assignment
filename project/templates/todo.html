@@ -235,28 +235,24 @@ function toggleAddTaskForm(formId) {
 
 function toggleVisibility(itemId) {
     var element = document.getElementById(`subtasks-${itemId}`);
-    var isCollapsed = element.style.display === "none" ? false : true; // Determine the new state
-
-    // Toggle display
-    element.style.display = isCollapsed ? "block" : "none";
-
-    // Send AJAX request to update is_collapsed in the database
-    fetch(`/update-collapsed-state/${itemId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ is_collapsed: !isCollapsed }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    if (element.style.display === "none") {
+        element.style.display = "block";
+        localStorage.setItem(`subtasks-${itemId}`, "block");
+    } else {
+        element.style.display = "none";
+        localStorage.setItem(`subtasks-${itemId}`, "none");
+    }
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    // Find all elements that could have a stored state
+    document.querySelectorAll('ul[id^="subtasks-"]').forEach(function(element) {
+        var storedDisplay = localStorage.getItem(element.id);
+        if (storedDisplay) {
+            element.style.display = storedDisplay;
+        }
+    });
+});
 </script>
 
 
