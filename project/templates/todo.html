@@ -127,9 +127,9 @@
                                     </div>
                                     <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
 
-                                    {% if sub_item.children %}
-                                        <button class="button is-small is-light" onclick="toggleVisibility('subtasks-{{ sub_item.id }}')">Expand/Collapse</button>
-                                    {% endif %}
+                                        {% if sub_item.children %}
+                                            <button class="button is-small is-light" onclick="toggleVisibility('subtasks-{{ sub_item.id }}')">Expand/Collapse</button>
+                                        {% endif %}
                                     
                                     </div>
                                     <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
@@ -158,7 +158,6 @@
 
                                     <!-- Sub-subtasks display, if any -->
                                     {% if sub_item.children %}
-                                        <button onclick="toggleVisibility('subsubtasks-{{ sub_item.id }}')">Expand/Collapse</button>
                                         <ul id="subsubtasks-{{ sub_item.id }}" style="display: none; margin-left: 20px;">
                                             {% for sub_sub_item in sub_item.children %}
                                             <li style="list-style-type: square;">
