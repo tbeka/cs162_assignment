@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 from .models import User, List, Item
 from . import db
@@ -113,13 +113,18 @@ def delete_task(item_id):
     flash('Task deleted successfully!', 'success')
     return redirect(url_for('main.todo'))
 
+@main.route('/update-collapsed-state/<int:item_id>', methods=['POST'])
+def update_collapsed_state(item_id):
+    data = request.get_json()
+    item = Item.query.get(item_id)
+    if item:
+        item.is_collapsed = data.get('is_collapsed')
+        db.session.commit()
+        return jsonify({"message": "Item updated successfully"}), 200
+    return jsonify({"message": "Item not found"}), 404
 
 
 #TASKS:
-# Add the ability to rename with a nice edit icon
-# Add the ability to delete with a nice X icon
-# Add the ability to move between lists 
-# Add the ability to add subtasks
-# Add the ability to expand and collapse subtasks
-# Add the ability to add sub-subtasks
-# Add the ability to expand and collapse sub-subtasks
+# Add the ability to move task between lists
+# Fix design
+# Revise
