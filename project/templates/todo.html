@@ -117,7 +117,7 @@
                                     <div class="card-content">
                                         <div class="content">
                                             <div id="title-container-{{ list.id }}">
-                                                <h2 class="title is-4" style="color: black; display: inline-block;">{{ sub_item.content }}</h2>
+                                                <h2 class="title is-2" style="color: black; display: inline-block;">{{ sub_item.content }}</h2>
                                             </div>
                                             <form id="edit-task-form-{{ sub_item.id }}" action="{{ url_for('main.update_task', item_id=sub_item.id) }}" method="post" style="display: none;">
                                                 <input type="text" class="input is-small" name="new_content" value="{{ sub_item.content }}">
@@ -128,7 +128,7 @@
                                     <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
 
                                         {% if sub_item.children %}
-                                            <button class="button is-small is-light" onclick="toggleVisibility('subtasks-{{ sub_item.id }}')">Expand/Collapse</button>
+                                            <button class="button is-small is-light" onclick="toggleVisibility('subsubtasks-{{ sub_item.id }}')">Expand/Collapse</button>
                                         {% endif %}
                                     
                                     </div>
