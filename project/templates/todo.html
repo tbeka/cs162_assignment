@@ -107,7 +107,7 @@
 
                     {% if item.children %}
 
-                        <ul id="subtasks-{{ item.id }}" style="display: none; margin-left: 20px; margin-right: 20px">
+                        <ul id="subtasks-{{ item.id }}" style="display: {{'none' if item.is_collapsed else 'block';}} margin-left: 20px; margin-right: 20px">
                             {% for sub_item in item.children %}
 
 
