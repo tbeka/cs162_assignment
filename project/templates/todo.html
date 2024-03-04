@@ -81,7 +81,14 @@
 
                         
                     </div>
+
+                    <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
+                    {% if item.children %}
+                        <button class="button is-small is-light" onclick="toggleVisibility('subtasks-{{ item.id }}')">Expand/Collapse</button>
+                    {% endif %}
                     
+                    </div>
+
                     <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
                         <button class="button is-info is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ item.id }}')">Add Subtask</button>
                         <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')" class="button is-small is-light">Rename</a>
@@ -91,12 +98,10 @@
                             <button type="submit" class="button is-small is-light">Delete</button>
                         </form>
                         <!-- Additional buttons like "Add Subtask" can be added here following the same pattern -->
-                        {% if item.children %}
-                            <button class="button is-small is-light" onclick="toggleVisibility('subtasks-{{ item.id }}')">Expand/Collapse</button>
-                        {% endif %}
                         
-        
+                        
                     </div>
+
 
                     <!-- Form to Add Subtask, Initially Hidden -->
                     <div id="add-subtask-form-{{ item.id }}" style="display: none; width: 60%;">
