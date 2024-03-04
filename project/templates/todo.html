@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1 class="title">
+<h1 class="title is-2">
     Welcome, {{ name }}!
 </h1>
 
@@ -31,7 +31,7 @@
         <!-- Display List Title -->
         <div class="content">
             <div id="title-container-{{ list.id }}">
-                <h2 class="title is-4" style="color: black; display: inline-block;">{{ list.title }}</h2>
+                <h2 class="title is-3" style="color: black; display: inline-block;">{{ list.title }}</h2>
                 
             </div>
             <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none; width: 50%">
@@ -116,8 +116,8 @@
                                 <div class="card" style="margin-bottom: 10px;">
                                     <div class="card-content">
                                         <div class="content">
-                                            <div id="title-container-{{ list.id }}">
-                                                <h2 class="title is-2" style="color: black; display: inline-block;">{{ sub_item.content }}</h2>
+                                            <div id="title-container-{{ item.id }}">
+                                                <h2 class="title is-5" style="color: black; display: inline-block;">{{ sub_item.content }}</h2>
                                             </div>
                                             <form id="edit-task-form-{{ sub_item.id }}" action="{{ url_for('main.update_task', item_id=sub_item.id) }}" method="post" style="display: none;">
                                                 <input type="text" class="input is-small" name="new_content" value="{{ sub_item.content }}">
@@ -158,14 +158,33 @@
 
                                     <!-- Sub-subtasks display, if any -->
                                     {% if sub_item.children %}
-                                        <ul id="subsubtasks-{{ sub_item.id }}" style="display: none; margin-left: 20px;">
+                                        <ul id="subsubtasks-{{ sub_item.id }}" style="display: none; margin-left: 20px; margin-right: 20px;">
                                             {% for sub_sub_item in sub_item.children %}
-                                            <li style="list-style-type: square;">
-                                                {{ sub_sub_item.content }}
-                                                <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_sub_item.id }}')">Rename</a>
-                                                <form action="{{ url_for('main.delete_task', item_id=sub_sub_item.id) }}" method="post" style="display: inline;">
-                                                    <button type="submit" class="button is-small is-light">Delete</button>
-                                                </form>
+                                            <li>
+                                                <div class="card" style="margin-bottom: 10px;">
+                                                    <div class="card-content">
+                                                        <div class="content">
+                                                            <div id="title-container-{{ sub_item.id }}">
+                                                                <h2 class="title is-6" style="color: black; display: inline-block;">{{ sub_sub_item.content }}</h2>
+                                                            </div>
+                                                            <form id="edit-task-form-{{ sub_sub_item.id }}" action="{{ url_for('main.update_task', item_id=sub_sub_item.id) }}" method="post" style="display: none;">
+                                                                <input type="text" class="input is-small" name="new_content" value="{{ sub_sub_item.content }}">
+                                                                <button type="submit" class="button is-small is-info">Save</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
+                                                
+                                                    </div>
+                                                    <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
+                                                        <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_sub_item.id }}')" class="button is-small is-light">Rename</a>
+                                                        <!-- Rename Task Form (Initially Hidden) -->
+                                                        
+                                                        <form action="{{ url_for('main.delete_task', item_id=sub_sub_item.id) }}" method="post" style="display: inline;">
+                                                            <button type="submit" class="button is-small is-light">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </li>
                                             {% endfor %}
                                         </ul>
