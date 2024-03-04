@@ -133,4 +133,5 @@ def toggle_collapse(item_id):
     item = Item.query.get_or_404(item_id)
     item.is_collapsed = not item.is_collapsed
     db.session.commit()
-    return jsonify(success=True, is_collapsed=item.is_collapsed)
+    #return jsonify(success=True, is_collapsed=item.is_collapsed)
+    return redirect(url_for('main.todo'))
