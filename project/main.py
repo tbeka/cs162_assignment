@@ -127,3 +127,10 @@ def update_item_position():
         return jsonify({'status': 'success', 'message': 'Item updated successfully'})
     else:
         return jsonify({'status': 'error', 'message': 'Item not found'}), 404
+
+@main.route('/toggle_collapse/<int:item_id>', methods=['POST'])
+def toggle_collapse(item_id):
+    item = Item.query.get_or_404(item_id)
+    item.is_collapsed = not item.is_collapsed
+    db.session.commit()
+    return jsonify(success=True, is_collapsed=item.is_collapsed)
