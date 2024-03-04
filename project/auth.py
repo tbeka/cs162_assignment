@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, render_template, redirect, url_for, flash, request
+from flask import Blueprint, flash, render_template, redirect, url_for, flash, request, session
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
@@ -8,6 +8,7 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login')
 def login():
+    session.pop('_flashes', None)
     return render_template('login.html')
 
 @auth.route('/login', methods=['POST'])
