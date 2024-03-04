@@ -126,7 +126,8 @@
                                         </div>
                                     </div>
                                     <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
-                                    {% if item.children %}
+
+                                    {% if sub_item.children %}
                                         <button class="button is-small is-light" onclick="toggleVisibility('subtasks-{{ sub_item.id }}')">Expand/Collapse</button>
                                     {% endif %}
                                     
