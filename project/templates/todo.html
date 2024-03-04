@@ -27,7 +27,7 @@
 
     <!-- Existing Lists Display -->
     {% for list in lists %}
-    <div class="box" style="position: relative; margin-bottom: 20px;">
+    <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)" data-list-id="{{ list.id }}" style="position: relative; margin-bottom: 20px;">
         <!-- Display List Title -->
         <div class="content">
             <div id="title-container-{{ list.id }}">
@@ -64,7 +64,7 @@
         <ul>
             {% for item in list.items if item.parent_id is none %}
             <li>
-                <div class="card" style="margin-bottom: 10px;">
+                <div class="card" draggable="true" ondragstart="drag(event)" id="task-{{ item.id }}" style="margin-bottom: 10px;">
                     <div class="card-content">
                         <div class="content">
                             <div id="title-container-{{ list.id }}">
@@ -239,6 +239,42 @@ function toggleVisibility(elementId) {
     } else {
         element.style.display = "none";
     }
+}
+
+function allowDrop(ev) {
+    ev.preventDefault(); // Necessary to allow dropping
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id); // Set the id of the dragged element
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    var droppedElement = document.getElementById(data);
+    ev.target.appendChild(droppedElement); // Append the dragged element to the drop target
+
+    // Extract item ID and new list ID or position
+    var itemId = data.split('-')[1]; // Assuming the ID format is "item-{id}"
+    var newListId = ev.target.getAttribute('data-list-id'); // Ensure your drop target has a 'data-list-id' attribute
+    
+    // AJAX call to update the backend
+    fetch('/update_item_position', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({item_id: itemId, new_list_id: newListId}),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }
 </script>
 

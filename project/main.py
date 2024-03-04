@@ -113,18 +113,17 @@ def delete_task(item_id):
     flash('Task deleted successfully!', 'success')
     return redirect(url_for('main.todo'))
 
-@main.route('/update-collapsed-state/<int:item_id>', methods=['POST'])
-def update_collapsed_state(item_id):
-    data = request.get_json()
+@main.route('/update_item_position', methods=['POST'])
+def update_item_position():
+    data = request.json
+    item_id = data.get('item_id')
+    new_list_id = data.get('new_list_id')
+    
+    # Update item with new list ID or position
     item = Item.query.get(item_id)
     if item:
-        item.is_collapsed = data.get('is_collapsed')
+        item.list_id = new_list_id  # Adjust attribute names based on your database schema
         db.session.commit()
-        return jsonify({"message": "Item updated successfully"}), 200
-    return jsonify({"message": "Item not found"}), 404
-
-
-#TASKS:
-# Add the ability to move task between lists
-# Fix design
-# Revise
+        return jsonify({'status': 'success', 'message': 'Item updated successfully'})
+    else:
+        return jsonify({'status': 'error', 'message': 'Item not found'}), 404
