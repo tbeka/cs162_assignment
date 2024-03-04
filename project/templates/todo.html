@@ -82,27 +82,29 @@
                         
                     </div>
                     
-                    <footer class="card-footer" style="justify-content: flex-end;">
-                        <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')" class="card-footer-item button is-small is-light">Rename</a>
+                    <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
+                        <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')" class="button is-small is-light">Rename</a>
                         <!-- Rename Task Form (Initially Hidden) -->
                         
                         <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
-                            <button type="submit" class="card-footer-item button is-small is-light">Delete</button>
+                            <button type="submit" class="button is-small is-light">Delete</button>
                         </form>
                         <!-- Additional buttons like "Add Subtask" can be added here following the same pattern -->
                         {% if item.children %}
                             <button onclick="toggleVisibility('subtasks-{{ item.id }}')">Expand/Collapse</button>
                         {% endif %}
                         <button class="button is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ item.id }}')">Add Subtask</button>
-                        <!-- Form to Add Subtask, Initially Hidden -->
-                        <div id="add-subtask-form-{{ item.id }}" style="display: none;">
-                            <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
-                                <input type="hidden" name="parent_id" value="{{ item.id }}">
-                                <input class="input" type="text" name="taskContent" placeholder="Enter new subtask" required>
-                                <button type="submit" class="button is-small is-link">Add Subtask</button>
-                            </form>
-                        </div>
-                    </footer>
+        
+                    </div>
+
+                    <!-- Form to Add Subtask, Initially Hidden -->
+                    <div id="add-subtask-form-{{ item.id }}" style="display: none;">
+                        <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
+                            <input type="hidden" name="parent_id" value="{{ item.id }}">
+                            <input class="input" type="text" name="taskContent" placeholder="Enter new subtask" required>
+                            <button type="submit" class="button is-small is-link">Add Subtask</button>
+                        </form>
+                    </div>
                 
                 
                 
