@@ -32,19 +32,20 @@
         <div class="content">
             <div id="title-container-{{ list.id }}">
                 <h2 class="title is-4" style="color: black; display: inline-block;">{{ list.title }}</h2>
-                <a onclick="toggleEdit('{{ list.id }}')" class="button is-light is-small">Rename</a>
+                
             </div>
-            <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none;">
+            <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none; width: 50%">
                 <input type="text" class="input is-small" name="new_title" value="{{ list.title }}">
                 <button type="submit" class="button is-info is-small">Save</button>
             </form>
         </div>
         
         <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
+            <button class="button is-info is-small" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
+            <a onclick="toggleEdit('{{ list.id }}')" class="button is-light is-small">Rename</a>
             <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post">
                 <button type="submit" class="button is-light is-small">Delete</button>
             </form>
-            <button class="button is-info is-small" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
         </div>
         
         <!-- Form to Add New Task, Initially Hidden, for each List -->
