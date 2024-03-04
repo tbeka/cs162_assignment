@@ -24,5 +24,4 @@ class Item(db.Model):
                                backref=db.backref('parent', remote_side=[id]), 
                                lazy=True, 
                                cascade="all, delete-orphan")
-    is_complete = db.Column(db.Boolean, default=False)
     is_collapsed = db.Column(db.Boolean, default=False)
