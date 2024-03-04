@@ -8,7 +8,6 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login')
 def login():
-    session.pop('_flashes', None)
     return render_template('login.html')
 
 @auth.route('/login', methods=['POST'])
