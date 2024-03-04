@@ -242,7 +242,17 @@ function toggleVisibility(elementId) {
 }
 
 function allowDrop(ev) {
-    ev.preventDefault(); // Necessary to allow dropping
+    ev.preventDefault(); // This allows the drop by preventing the default behavior
+    var target = ev.target;
+
+    // Check if the target is a list container; if not, do not allow dropping
+    while(target && target.getAttribute('data-list-id') === null) {
+        target = target.parentNode; // Move up in the DOM tree
+        if(target.nodeName === "BODY") { // Stop if the body element is reached without finding a list container
+            ev.stopPropagation(); // Stop the event from bubbling further
+            return false; // Prevent drop
+        }
+    }
 }
 
 function drag(ev) {
@@ -252,29 +262,38 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    var droppedElement = document.getElementById(data);
-    ev.target.appendChild(droppedElement); // Append the dragged element to the drop target
+    var target = ev.target;
 
-    // Extract item ID and new list ID or position
-    var itemId = data.split('-')[1]; // Assuming the ID format is "item-{id}"
-    var newListId = ev.target.getAttribute('data-list-id'); // Ensure your drop target has a 'data-list-id' attribute
-    
-    // AJAX call to update the backend
-    fetch('/update_item_position', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({item_id: itemId, new_list_id: newListId}),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    // Ensure the drop target is a list container
+    while(target && target.getAttribute('data-list-id') === null) {
+        target = target.parentNode;
+        if(target.nodeName === "BODY") return; // If it's not a list container, exit
+    }
+
+    var droppedElement = document.getElementById(data);
+    if(target && target.classList.contains('box')) { // Optionally, check if target has a specific class indicating it's a drop zone
+        target.appendChild(droppedElement); // Only append if the target is correct
+
+        var itemId = data.split('-')[1]; // Assuming the ID format is "item-{id}"
+        var newListId = target.getAttribute('data-list-id');
+
+        // AJAX call to update the backend
+        fetch('/update_item_position', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({item_id: itemId, new_list_id: newListId}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
 }
 </script>
 
