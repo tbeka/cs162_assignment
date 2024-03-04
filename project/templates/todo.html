@@ -233,6 +233,7 @@ function toggleAddTaskForm(formId) {
 }
 
 function toggleVisibility(itemId) {
+    console.log("toggleVisibility called for item:", itemId);
     var element = document.getElementById('subtasks-' + itemId);
     var isCollapsed = element.style.display === "none" ? false : true; // Determine the new state
 
