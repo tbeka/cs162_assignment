@@ -25,7 +25,7 @@
 </div>
 
 <script>
-function toggleTaskForm(listId) {
+function toggleAddTaskList(listId) {
     var formId = listId ? 'add-task-form-' + listId : 'add-task-form';
     const form = document.getElementById(formId);
     form.style.display = form.style.display === "none" ? "block" : "none";
@@ -59,6 +59,7 @@ function toggleAddTaskForm(formId) {
     var form = document.getElementById(formId);
     form.style.display = form.style.display === "none" ? "block" : "none";
 }
+
 
 function allowDrop(ev) {
     ev.preventDefault();
