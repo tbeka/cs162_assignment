@@ -1,23 +1,31 @@
 {% for list in lists %}
     <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)" data-list-id="{{ list.id }}" style="position: relative; margin-bottom: 20px;">
+        <!-- Container for the list with drag and drop functionality -->
         <div class="content" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+
+            <!-- List title -->
             <div id="list-title-container-{{ list.id }}">
                 <h2 class="title is-3" style="color: black; display: inline-block;">{{ list.title }}</h2>
             </div>
+
+            <!-- Edit the list title, hidden by default -->
             <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none; width: 50%">
                 <input type="text" class="input is-small" name="new_title" value="{{ list.title }}">
                 <button type="submit" class="button is-info is-small">Save</button>
             </form>
+
         </div>
 
+        <!-- Buttons for adding a new task, renaming, and deleting the list -->
         <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
-            <button class="button is-info is-small" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
+            <button class="button is-info is-small" onclick="toggleAddTaskForm('add-task-form-{{ list.id }}')">Add New Task</button>
             <a onclick="toggleEditList('{{ list.id }}')" class="button is-light is-small">Rename</a>
             <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post">
                 <button type="submit" class="button is-light is-small">Delete</button>
             </form>
         </div>
 
+        <!-- Adding a new task, hidden by default -->
         <div id="add-task-form-{{ list.id }}" style="display: none;">
             <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
                 <div class="field">
@@ -32,7 +40,8 @@
                 </div>
             </form>
         </div>
-            {% include 'todo_pages/task.html' %}
-
+        
+        <!-- Include the task template for displaying tasks associated with this list -->
+        {% include 'todo_pages/task.html' %}
     </div>
-    {% endfor %}
+{% endfor %}

@@ -29,7 +29,7 @@
 
                 <!-- Buttons for adding a new subtask, renaming, and deleting the task -->
                 <div class="buttons are-small right">
-                    <button class="button is-info is-small" onclick="toggleTaskForm('add-subtask-form-{{ sub_item.id }}')">Add Subtask</button>
+                    <button class="button is-info is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ sub_item.id }}')">Add Subtask</button>
                     <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_item.id }}')" class="button is-small is-light">Rename</a>
                     <form action="{{ url_for('main.delete_task', item_id=sub_item.id) }}" method="post" style="display: inline;">
                         <button type="submit" class="button is-small is-light">Delete</button>
