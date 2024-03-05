@@ -97,11 +97,19 @@
 
                     </div>
                     <!-- Form to Add Subtask, Initially Hidden -->
-                    <div id="add-subtask-form-{{ item.id }}" style="display: none; width: 60%;">
+                    <div id="add-subtask-form-{{ item.id }}" style="display: none; margin: 0 auto; width: 80%;">
                         <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
                             <input type="hidden" name="parent_id" value="{{ item.id }}">
-                            <input class="input" type="text" name="taskContent" placeholder="Enter new subtask" required>
-                            <button type="submit" class="button is-small is-link">Add Subtask</button>
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input" type="text" name="taskContent" placeholder="Enter new subtask" required>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control has-text-centered">
+                                    <button type="submit" class="button is-small is-link" style="margin-bottom: 20px;">Add Subtask</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
 
@@ -148,13 +156,22 @@
 
                                     </div>
                                     <!-- Form to Add Subtask, Initially Hidden -->
-                                    <div id="add-subtask-form-{{ sub_item.id }}" style="display: none;">
-                                        <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
+                                    <div id="add-subtask-form-{{ sub_item.id }}" style="display: none; margin: 0 auto; width: 80%;">
+                                        <form action="{{ url_for('main.add_task', list_id=list.id, parent_id=sub_item.id) }}" method="post">
                                             <input type="hidden" name="parent_id" value="{{ sub_item.id }}">
-                                            <input class="input" type="text" name="taskContent" placeholder="Enter new sub-subtask" required>
-                                            <button type="submit" class="button is-small is-link">Add Subtask</button>
+                                            <div class="field">
+                                                <div class="control">
+                                                    <input class="input" type="text" name="taskContent" placeholder="Enter new sub-subtask" required>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="control has-text-centered">
+                                                    <button type="submit" class="button is-small is-link" style="margin-bottom: 20px;">Add Subsubtask</button>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
+                                    
 
 
 
