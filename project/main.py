@@ -23,12 +23,10 @@ def add_list():
     if request.method == 'POST':
         list_title = request.form.get('title')
         if not list_title:
-            flash('List title is required.', 'error')
             return redirect(url_for('main.add_list'))
         new_list = List(title=list_title, user_id=current_user.id)
         db.session.add(new_list)
         db.session.commit()
-        flash('List added successfully!', 'success')
         return redirect(url_for('main.todo'))
     return render_template('add_list.html')  # You'll need to create this template
 
@@ -42,7 +40,6 @@ def delete_list(list_id):
         return redirect(url_for('main.todo'))
     db.session.delete(list_to_delete)
     db.session.commit()
-    flash('List deleted successfully!', 'success')
     return redirect(url_for('main.todo'))
 
 @main.route('/todo/add-task/<int:list_id>', methods=['POST'])
@@ -56,9 +53,6 @@ def add_task(list_id):
         new_item = Item(content=content, list_id=list_id, parent_id=parent_id)
         db.session.add(new_item)
         db.session.commit()
-        flash('Task added successfully!', 'success')
-    else:
-        flash('Task content is required.', 'error')
     
     return redirect(url_for('main.todo'))
 
@@ -79,7 +73,6 @@ def update_list_title(list_id):
     
     list_to_update.title = new_title
     db.session.commit()
-    flash('List title updated successfully.', 'success')
     return redirect(url_for('main.todo'))
 
 @main.route('/todo/update-task/<int:item_id>', methods=['POST'])
@@ -97,7 +90,7 @@ def update_task(item_id):
 
     item.content = new_content
     db.session.commit()
-    flash('Task updated successfully!', 'success')
+
     return redirect(url_for('main.todo'))
 
 @main.route('/todo/delete-task/<int:item_id>', methods=['POST'])
@@ -110,7 +103,6 @@ def delete_task(item_id):
 
     db.session.delete(item)
     db.session.commit()
-    flash('Task deleted successfully!', 'success')
     return redirect(url_for('main.todo'))
 
 @main.route('/update_item_position', methods=['POST'])
@@ -131,6 +123,7 @@ def update_item_position():
 
 
 @main.route('/toggle-collapse/<item_id>', methods=['POST'])
+@login_required
 def toggle_collapse(item_id):
     # Assuming you have a model named Item
     item = Item.query.get(item_id)
