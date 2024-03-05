@@ -14,28 +14,34 @@
     <section class="hero is-primary is-fullheight">
 
         <div class="hero-head">
+            <!-- Navigation -->
             <nav class="navbar">
                 <div class="container">
                     <div id="navbarMenuHeroA" class="navbar-menu">
                         <div class="navbar-end">
+                            <!-- Home link -->
                             <a href="{{ url_for('main.index') }}" class="navbar-item">
                                 Home
                             </a>
                             {% if current_user.is_authenticated %}
+                            <!-- To-do list link -->
                             <a href="{{ url_for('main.todo') }}" class="navbar-item">
                                 To-do list
                             </a>
                             {% endif %}
                             {% if not current_user.is_authenticated %}
+                            <!-- Login link -->
                             <a href="{{ url_for('auth.login') }}" class="navbar-item">
                                 Login
                             </a>
+                            <!-- Sign Up link -->
                             <a href="{{ url_for('auth.signup') }}" class="navbar-item">
                                 Sign Up
                             </a>
                             {% endif %} 
                             
                             {% if current_user.is_authenticated %}
+                            <!-- Logout link -->
                             <a href="{{ url_for('auth.logout') }}" class="navbar-item">
                                 Logout
                             </a>

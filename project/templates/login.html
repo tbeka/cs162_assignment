@@ -2,29 +2,38 @@
 
 {% block content %}
 <div class="column is-4 is-offset-4">
+    <!-- Title for the login page -->
     <h3 class="title">Login</h3>
     <div class="box">
+        <!-- Temporarily assigns flashed messages to 'messages' for display -->
         {% with messages = get_flashed_messages() %}
+        <!-- Checks if there are any messages to show -->
         {% if messages %}
+            <!-- Displays the first message in a notification box -->
             <div class="notification is-danger">
                 {{ messages[0] }}
             </div>
         {% endif %}
         {% endwith %}
+        <!-- Begins the login form with POST method to submit credentials -->
         <form method="POST" action="/login">
             <div class="field">
                 <div class="control">
+                    <!-- Email input field -->
                     <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="">
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
+                    <!-- Password input field -->
                     <input class="input is-large" type="password" name="password" placeholder="Your Password">
                 </div>
             </div>
+            <!-- Login button -->
             <button class="button is-block is-info is-large is-fullwidth">Login</button>
         </form>
     </div>
 </div>
+<!-- Ends the content block definition -->
 {% endblock %}
