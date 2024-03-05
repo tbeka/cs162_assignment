@@ -178,7 +178,7 @@
 
                                     <!-- Sub-subtasks display, if any -->
                                     {% if sub_item.children %}
-                                        <ul id="subsubtasks-{{ sub_item.id }}" style="display: {{'none' if sub_item.is_collapsed else 'block'}}; margin-left: 20px; margin-right: 20px;">
+                                        <ul id="subtasks-{{ sub_item.id }}" style="display: {{'none' if sub_item.is_collapsed else 'block'}}; margin-left: 20px; margin-right: 20px;">
                                             {% for sub_sub_item in sub_item.children %}
                                             <li>
                                                 <div class="card" style="margin-bottom: 10px;">
