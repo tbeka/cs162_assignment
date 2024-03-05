@@ -21,7 +21,7 @@
         </form>
     </div>
 
-    {% include 'list.html' %}
+    {% include 'todo_pages/list.html' %}
 </div>
 
 <script>
@@ -43,7 +43,7 @@ function toggleEditTask(itemId) {
     }
 }
 
-function toggleEdit(listId) {
+function toggleEditList(listId) {
     const titleContainer = document.getElementById(`list-title-container-${listId}`);
     const editForm = document.getElementById(`edit-form-${listId}`);
     if (editForm.style.display === "none") {
