@@ -5,7 +5,7 @@
             <div class="content">
                 <!-- Task title -->
                 <div class="title-container" id="title-container-{{ item.id }}">
-                    <h2 class="title is-4">{{ item.content }}</h2>
+                    <h2 class="title is-4" style="color:black">{{ item.content }}</h2>
                 </div>
                 <!-- Editing task title, hidden by default -->
                 <form class="edit-task-form" id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post">
