@@ -5,7 +5,7 @@
 <h1 class="title is-2">Welcome, {{ name }}!</h1>
 
 <div class="container">
-    <button class="button is-small is-info" onclick="toggleTaskForm()" style="margin-bottom: 20px;">Add New List</button>
+    <button class="button is-small is-info" onclick="toggleAddTaskForm('add-task-form')" style="margin-bottom: 20px;">Add New List</button>
 
     <div id="add-task-form" class="box" style="display: none;">
         <form action="{{ url_for('main.add_list') }}" method="post">
@@ -25,36 +25,40 @@
 </div>
 
 <script>
-function toggleVisibility(elementId, relatedElementId = null) {
-    const element = document.getElementById(elementId);
-    const relatedElement = relatedElementId ? document.getElementById(relatedElementId) : null;
-
-    if (element) {
-        element.style.display = element.style.display === "none" ? "block" : "none";
-    }
-    
-    if (relatedElement) {
-        relatedElement.style.display = relatedElement.style.display === "none" ? "block" : "none";
-    }
-}
-
-// Example usage for a generic toggle
-function toggleEditTask(itemId) {
-    toggleVisibility(`edit-task-form-${itemId}`, `title-container-${itemId}`);
-}
-
-function toggleEditList(listId) {
-    toggleVisibility(`edit-form-${listId}`, `list-title-container-${listId}`);
-}
-
-function toggleTaskForm(listId = '') {
-    toggleVisibility(listId ? 'add-task-form-' + listId : 'add-task-form');
+function toggleTaskForm(listId) {
+    var formId = listId ? 'add-task-form-' + listId : 'add-task-form';
+    const form = document.getElementById(formId);
+    form.style.display = form.style.display === "none" ? "block" : "none";
 }
 
 function toggleAddTaskForm(formId) {
-    toggleVisibility(formId);
+    var form = document.getElementById(formId);
+    form.style.display = form.style.display === "none" ? "block" : "none";
 }
 
+function toggleEditTask(itemId) {
+    const titleContainer = document.getElementById(`title-container-${itemId}`);
+    const editForm = document.getElementById(`edit-task-form-${itemId}`);
+    if (editForm.style.display === "none") {
+        editForm.style.display = "block";
+        titleContainer.style.display = "none";
+    } else {
+        editForm.style.display = "none";
+        titleContainer.style.display = "block";
+    }
+}
+
+function toggleEditList(listId) {
+    const titleContainer = document.getElementById(`list-title-container-${listId}`);
+    const editForm = document.getElementById(`edit-form-${listId}`);
+    if (editForm.style.display === "none") {
+        editForm.style.display = "block";
+        titleContainer.style.display = "none";
+    } else {
+        editForm.style.display = "none";
+        titleContainer.style.display = "block";
+    }
+}
 
 function allowDrop(ev) {
     ev.preventDefault();
