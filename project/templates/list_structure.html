@@ -32,9 +32,7 @@
                 </div>
             </form>
         </div>
-        <ul>
             {% for item in list.items if item.parent_id is none %}
-            <li>
                 <div class="card" draggable="true" ondragstart="drag(event)" id="task-{{ item.id }}" style="margin-bottom: 10px;">
                     <div class="card-content">
                         <div class="content" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
@@ -150,8 +148,6 @@
                         </ul>
                     {% endif %} 
                 </div>
-            </li>
             {% endfor %}
-        </ul>
     </div>
     {% endfor %}
