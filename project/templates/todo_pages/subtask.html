@@ -1,17 +1,17 @@
-<ul id="subtasks-{{ item.id }}" style="display: {{'none' if item.is_collapsed else 'block'}}; margin-left: 20px; margin-right: 20px">
+<ul id="subtasks-{{ item.id }}" class="subtask-list" style="display: {{'none' if item.is_collapsed else 'block'}}; margin-left: 20px; margin-right: 20px">
     {% for sub_item in item.children %}
         <li>
             <!-- Subtask card container -->
-            <div class="card" style="margin-bottom: 10px;">
+            <div class="card">
                 <div class="card-content">
-                    <div class="content" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                    <div class="content">
                         <!-- Subtask title -->
-                        <div id="title-container-{{ sub_item.id }}" style="width: 100%;">
-                            <h2 class="title is-5" style="color: black; display: inline-block;">{{ sub_item.content }}</h2>
+                        <div id="title-container-{{ sub_item.id }}" class="title-container">
+                            <h2 class="title is-5">{{ sub_item.content }}</h2>
                         </div>
 
                         <!-- Editing the subtask title, hidden by default -->
-                        <form id="edit-task-form-{{ sub_item.id }}" action="{{ url_for('main.update_task', item_id=sub_item.id) }}" method="post" style="display: none; width: 50%;">
+                        <form id="edit-task-form-{{ sub_item.id }}" class="edit-task-form" action="{{ url_for('main.update_task', item_id=sub_item.id) }}" method="post">
                             <input type="text" class="input is-small" name="new_content" value="{{ sub_item.content }}">
                             <button type="submit" class="button is-small is-info">Save</button>
                         </form>
@@ -20,7 +20,7 @@
 
 
                  <!-- Expand/Collapse button, hidden if task does not have subtasks-->
-                <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
+                 <div class="buttons are-small left">
                     {% if sub_item.children %}
                         <button class="button is-small is-light" onclick="toggleExpandCollapse('{{ sub_item.id }}')">Expand/Collapse</button>
                     {% endif %}
@@ -28,7 +28,7 @@
 
 
                 <!-- Buttons for adding a new subtask, renaming, and deleting the task -->
-                <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
+                <div class="buttons are-small right">
                     <button class="button is-info is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ sub_item.id }}')">Add Subtask</button>
                     <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_item.id }}')" class="button is-small is-light">Rename</a>
                     <form action="{{ url_for('main.delete_task', item_id=sub_item.id) }}" method="post" style="display: inline;">
@@ -38,7 +38,7 @@
 
 
                 <!-- Form for adding a new sub-subtask, hidden by default -->
-                <div id="add-subtask-form-{{ sub_item.id }}" style="display: none; margin: 0 auto; width: 80%;">
+                <div id="add-subtask-form-{{ sub_item.id }}" class="add-subtask-form">
                     <form action="{{ url_for('main.add_task', list_id=list.id, parent_id=sub_item.id) }}" method="post">
                         <input type="hidden" name="parent_id" value="{{ sub_item.id }}">
                         <div class="field">

@@ -77,3 +77,38 @@
 .control.has-text-centered {
     text-align: center; /* Center align the content */
 }
+
+/* Reusing existing styles for consistency */
+.card {
+    margin-bottom: 10px; /* Consistent margin for all tasks */
+}
+
+.card-content, .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Adjust the title style for subtasks if necessary */
+.title.is-5 {
+    color: black;
+    display: inline-block;
+}
+
+/* Forms and buttons use the same style classes */
+.edit-task-form, .button.is-small, .button.is-info, .button.is-light {
+    /* Styles defined previously */
+}
+
+/* Specific styles for the add-subtask form */
+.add-subtask-form {
+    display: none; /* Initially hidden */
+    margin: 0 auto; /* Centering */
+    width: 80%;
+}
+
+/* If you have specific styles for subtasks, define them here */
+.subtask-specific-style {
+    /* Example style */
+}
