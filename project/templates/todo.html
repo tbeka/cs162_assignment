@@ -120,12 +120,12 @@
                                     <div class="card-content">
                                         <div class="content">
                                             <div id="title-container-{{ item.id }}">
-                                                <h2 class="title is-5" style="color: black; display: inline-block;">{{ sub_item.content }}</h2>
+                                                <h2 class="title is-4" id="title-{{ item.id }}" style="color: black; display: inline-block;">{{ item.content }}</h2>
+                                                <form id="edit-task-form-{{ item.id }}" action="{{ url_for('main.update_task', item_id=item.id) }}" method="post" style="display: none;">
+                                                    <input type="text" class="input is-small" name="new_content" value="{{ item.content }}">
+                                                    <button type="submit" class="button is-small is-info">Save</button>
+                                                </form>
                                             </div>
-                                            <form id="edit-task-form-{{ sub_item.id }}" action="{{ url_for('main.update_task', item_id=sub_item.id) }}" method="post" style="display: none;">
-                                                <input type="text" class="input is-small" name="new_content" value="{{ sub_item.content }}">
-                                                <button type="submit" class="button is-small is-info">Save</button>
-                                            </form>
                                         </div>
                                     </div>
                                     <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
