@@ -1,0 +1,79 @@
+/* General card styles */
+.card {
+    margin-bottom: 10px; /* Replace inline styles */
+    position: relative; /* For absolute positioning of child elements */
+}
+
+.card-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Task titles */
+.title-container {
+    width: 100%;
+}
+
+.title {
+    color: black;
+    display: inline-block; /* Adjust as necessary */
+}
+
+/* Forms for editing, initially hidden */
+.edit-task-form {
+    display: none; /* Initially hidden */
+    width: 50%; /* Adjust width as necessary */
+}
+
+.input.is-small {
+    /* Style for small inputs if needed */
+}
+
+.button.is-small {
+    /* Additional styles for small buttons if needed */
+}
+
+.button.is-info {
+    /* Styles for 'is-info' buttons */
+}
+
+.button.is-light {
+    /* Styles for 'is-light' buttons */
+}
+
+/* Styles for buttons container */
+.buttons.are-small {
+    position: absolute;
+    top: 10px;
+}
+
+/* Left-aligned buttons */
+.buttons.left {
+    left: 10px;
+}
+
+/* Right-aligned buttons */
+.buttons.right {
+    right: 10px;
+}
+
+/* Form for adding subtasks */
+.add-subtask-form {
+    display: none; /* Initially hidden */
+    margin: 0 auto; /* Centering the form */
+    width: 80%; /* Adjust width as necessary */
+}
+
+.field {
+    /* Style for form fields if needed */
+}
+
+.control {
+    /* Style for form control if needed */
+}
+
+.control.has-text-centered {
+    text-align: center; /* Center align the content */
+}
