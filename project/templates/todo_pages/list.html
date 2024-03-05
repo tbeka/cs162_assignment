@@ -1,24 +1,24 @@
 {% for list in lists %}
-    <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)" data-list-id="{{ list.id }}">
-        <div class="content">
+    <div class="box" ondrop="drop(event)" ondragover="allowDrop(event)" data-list-id="{{ list.id }}" style="position: relative; margin-bottom: 20px;">
+        <div class="content" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
             <div id="list-title-container-{{ list.id }}">
-                <h2 class="title is-3">{{ list.title }}</h2>
+                <h2 class="title is-3" style="color: black; display: inline-block;">{{ list.title }}</h2>
             </div>
-            <form id="edit-form-{{ list.id }}" class="edit-form" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post">
+            <form id="edit-form-{{ list.id }}" action="{{ url_for('main.update_list_title', list_id=list.id) }}" method="post" style="display: none; width: 50%">
                 <input type="text" class="input is-small" name="new_title" value="{{ list.title }}">
                 <button type="submit" class="button is-info is-small">Save</button>
             </form>
         </div>
 
-        <div class="buttons are-small">
+        <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
             <button class="button is-info is-small" onclick="toggleTaskForm('{{ list.id }}')">Add New Task</button>
-            <a onclick="toggleEditList('{{ list.id }}')" class="button is-light is-small">Rename</a>
+            <a onclick="toggleEdit('{{ list.id }}')" class="button is-light is-small">Rename</a>
             <form action="{{ url_for('main.delete_list', list_id=list.id) }}" method="post">
                 <button type="submit" class="button is-light is-small">Delete</button>
             </form>
         </div>
 
-        <div id="add-task-form-{{ list.id }}" class="add-task-form">
+        <div id="add-task-form-{{ list.id }}" style="display: none;">
             <form action="{{ url_for('main.add_task', list_id=list.id) }}" method="post">
                 <div class="field">
                     <div class="control">
@@ -26,12 +26,13 @@
                     </div>
                 </div>
                 <div class="field">
-                    <div class="control has-text-centered input-control">
-                        <button type="submit" class="button is-small is-info">Add Task</button>
+                    <div class="control has-text-centered">
+                        <button type="submit" class="button is-small is-info" style="margin-bottom: 20px;">Add Task</button>
                     </div>
                 </div>
             </form>
         </div>
-        {% include 'todo_pages/task.html' %}
+            {% include 'todo_pages/task.html' %}
+
     </div>
-{% endfor %}
+    {% endfor %}
