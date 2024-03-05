@@ -80,7 +80,7 @@
                     </div>
                     <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
                     {% if item.children %}
-                        <button class="button is-small is-light" onclick="toggleVisibility('subtasks-{{ item.id }}')">Expand/Collapse</button>
+                        <button class="button is-small is-light" onclick="toggleExpandCollapse('{{ item.id }}')">Expand/Collapse</button>
                     {% endif %}
 
                     </div>
@@ -139,7 +139,7 @@
                                     <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
 
                                         {% if sub_item.children %}
-                                            <button class="button is-small is-light" onclick="toggleVisibility('subsubtasks-{{ sub_item.id }}')">Expand/Collapse</button>
+                                            <button class="button is-small is-light" onclick="toggleExpandCollapse('{{ sub_item.id }}')">Expand/Collapse</button>
                                         {% endif %}
 
                                     </div>
@@ -321,6 +321,20 @@ function drop(ev) {
             console.error('Error:', error);
         });
     }
+}
+
+function toggleExpandCollapse(itemId) {
+    fetch(`/toggle-collapse/${itemId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const subtasks = document.getElementById(`subtasks-${itemId}`);
+                subtasks.style.display = data.is_collapsed ? 'none' : 'block';
+            } else {
+                console.error('Failed to toggle the collapsed state.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }
 </script>
 
