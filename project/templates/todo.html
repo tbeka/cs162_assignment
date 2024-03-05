@@ -117,7 +117,7 @@
 
                     {% if item.children %}
 
-                        <ul id="subtasks-{{ item.id }}" style="display: {{'none' if item.is_collapsed else 'block'}}; margin-left: 20px; margin-right: 20px">
+                        <ul id="subtasks-{{ item.id }}" style="display: {{'none' if sub_item.is_collapsed else 'block'}}; margin-left: 20px; margin-right: 20px">
                             {% for sub_item in item.children %}
 
 
@@ -192,9 +192,6 @@
                                                                 <button type="submit" class="button is-small is-info">Save</button>
                                                             </form>
                                                         </div>
-                                                    </div>
-                                                    <div class="buttons are-small" style="position: absolute; top: 10px; left: 10px;">
-
                                                     </div>
                                                     <div class="buttons are-small" style="position: absolute; top: 10px; right: 10px;">
                                                         <a href="javascript:void(0);" onclick="toggleEditTask('{{ sub_sub_item.id }}')" class="button is-small is-light">Rename</a>
