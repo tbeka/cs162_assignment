@@ -1,88 +1,10 @@
 /* General card styles */
 .card {
-    margin-bottom: 10px; /* Replace inline styles */
-    position: relative; /* For absolute positioning of child elements */
+    margin-bottom: 10px; /* Consistent margin for all cards */
+    position: relative; /* Allows for absolute positioning of child elements */
 }
 
-.card-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-/* Task titles */
-.title-container {
-    width: 100%;
-}
-
-.title {
-    color: black;
-    display: inline-block; /* Adjust as necessary */
-}
-
-/* Forms for editing, initially hidden */
-.edit-task-form {
-    display: none; /* Initially hidden */
-    width: 50%; /* Adjust width as necessary */
-}
-
-.input.is-small {
-    /* Style for small inputs if needed */
-}
-
-.button.is-small {
-    /* Additional styles for small buttons if needed */
-}
-
-.button.is-info {
-    /* Styles for 'is-info' buttons */
-}
-
-.button.is-light {
-    /* Styles for 'is-light' buttons */
-}
-
-/* Styles for buttons container */
-.buttons.are-small {
-    position: absolute;
-    top: 10px;
-}
-
-/* Left-aligned buttons */
-.buttons.left {
-    left: 10px;
-}
-
-/* Right-aligned buttons */
-.buttons.right {
-    right: 10px;
-}
-
-/* Form for adding subtasks */
-.add-subtask-form {
-    display: none; /* Initially hidden */
-    margin: 0 auto; /* Centering the form */
-    width: 80%; /* Adjust width as necessary */
-}
-
-.field {
-    /* Style for form fields if needed */
-}
-
-.control {
-    /* Style for form control if needed */
-}
-
-.control.has-text-centered {
-    text-align: center; /* Center align the content */
-}
-
-/* Reusing existing styles for consistency */
-.card {
-    margin-bottom: 10px; /* Consistent margin for all tasks */
-}
-
+/* Flex container for card content */
 .card-content, .content {
     display: flex;
     justify-content: center;
@@ -90,25 +12,44 @@
     flex-direction: column;
 }
 
-/* Adjust the title style for subtasks if necessary */
-.title.is-5 {
-    color: black;
-    display: inline-block;
+/* Task and subtask title styles */
+.title-container {
+    width: 100%; /* Ensures title container fills width of its parent */
 }
 
-/* Forms and buttons use the same style classes */
-.edit-task-form, .button.is-small, .button.is-info, .button.is-light {
-    /* Styles defined previously */
+.title {
+    color: black; /* Ensures title text is black */
+    display: inline-block; /* Allows titles to be inline but also block-level for styling */
 }
 
-/* Specific styles for the add-subtask form */
+/* Forms for editing tasks and subtasks, initially hidden */
+.edit-task-form, .add-subtask-form {
+    display: none; /* Hidden by default, shown via JavaScript */
+    width: 50%; /* Editing form width, adjust as necessary */
+    margin: 0 auto; /* Centers the form within its parent for the add-subtask form */
+}
+
+/* Adjust the width specifically for add-subtask-form */
 .add-subtask-form {
-    display: none; /* Initially hidden */
-    margin: 0 auto; /* Centering */
-    width: 80%;
+    width: 80%; /* More appropriate width for add subtask forms */
 }
 
-/* If you have specific styles for subtasks, define them here */
-.subtask-specific-style {
-    /* Example style */
+/* Button container positioning */
+.buttons.are-small {
+    position: absolute;
+    top: 10px;
+}
+
+/* Alignment classes for buttons */
+.buttons.left {
+    left: 10px; /* Align buttons to the left of their parent container */
+}
+
+.buttons.right {
+    right: 10px; /* Align buttons to the right of their parent container */
+}
+
+/* Center text alignment for control elements, like inside forms */
+.control.has-text-centered {
+    text-align: center; /* Ensures text inside the control is centered */
 }
