@@ -15,7 +15,7 @@ def index():
 @login_required
 def todo():
     user_lists = List.query.filter_by(user_id=current_user.id).all()
-    return render_template('todo.html', name=current_user.name, lists=user_lists)
+    return render_template('todo_pages/todo.html', name=current_user.name, lists=user_lists)
 
 
 ############################################################################################################
@@ -34,7 +34,6 @@ def add_list():
         db.session.add(new_list)
         db.session.commit()
         return redirect(url_for('main.todo'))  # Redirect to todo page after adding list
-    return render_template('add_list.html')  # Render add_list template for GET requests
 
 # Delete a list
 @main.route('/todo/delete-list/<int:list_id>', methods=['POST'])

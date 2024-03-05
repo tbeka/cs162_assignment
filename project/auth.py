@@ -10,7 +10,7 @@ auth = Blueprint('auth', __name__)
 # Login form
 @auth.route('/login')
 def login():
-    return render_template('login.html')
+    return render_template('auth_pages/login.html')
 
 # Handling login form submission
 @auth.route('/login', methods=['POST'])
@@ -33,7 +33,7 @@ def login_post():
 # Signup form
 @auth.route('/signup')
 def signup():
-    return render_template('signup.html')
+    return render_template('auth_pages/signup.html')
 
 # Handling signup form submission
 @auth.route('/signup', methods=['POST'])
