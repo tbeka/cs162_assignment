@@ -1,5 +1,4 @@
-"""
-README
+
 # Hierarchical Todo List App
 
 The Hierarchical Todo List App is a web application designed to help users manage their tasks in a structured and intuitive manner. Featuring a multi-level task organization system, users can create tasks, subtasks, and subsubtasks to capture the details of their work or personal projects. With built-in user authentication, each user can maintain their private list, accessible only after logging in.
@@ -40,6 +39,16 @@ todo-app/
 
 - Interactive UI: Drag and drop tasks to reorganize them. Expand or collapse task views for a streamlined experience. For details go to **scripts.js**.
 
+# Installation
+In order to run the app, use the following commands:
+```
+python3 -m venv venv
+source venv/bin/activate
+cd cs162_assignment-main
+pip3 install -r requirements.txt
+export FLASK_APP=project
+flask run
+```
 # Demo
 
 https://www.loom.com/share/690155c400fd4cd399e99558439276c9?sid=98e4a3df-8f02-4606-a24d-a058e21736ae
