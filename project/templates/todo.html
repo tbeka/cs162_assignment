@@ -58,11 +58,12 @@
                 </div>
                 <div class="field">
                     <div class="control has-text-centered">
-                        <button type="submit" class="button is-small is-link">Add Task</button>
+                        <button type="submit" class="button is-small is-info" style="margin-bottom: 20px;">Add Task</button>
                     </div>
                 </div>
             </form>
         </div>
+
         <ul>
             {% for item in list.items if item.parent_id is none %}
             <li>
@@ -213,8 +214,15 @@ function toggleTaskForm(listId) {
 }
 
 function toggleEditTask(itemId) {
+    const title = document.getElementById(`title-${itemId}`);
     const editForm = document.getElementById(`edit-task-form-${itemId}`);
-    editForm.style.display = editForm.style.display === "none" ? "block" : "none";
+    if (editForm.style.display === "none") {
+        editForm.style.display = "block";
+        title.style.display = "none";
+    } else {
+        editForm.style.display = "none";
+        title.style.display = "inline-block"; // Adjusted to match your original style
+    }
 }
 
 function toggleEdit(listId) {
