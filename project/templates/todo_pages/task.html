@@ -4,7 +4,7 @@
         <div class="card-content">
             <div class="content">
                 <!-- Task title -->
-                <div class="title-container" id="title-container-{{ item.id }}">
+                <div class="title-container" id="task-title-container-{{ item.id }}">
                     <h2 class="title is-4" style="color:black">{{ item.content }}</h2>
                 </div>
                 <!-- Editing task title, hidden by default -->
@@ -24,7 +24,7 @@
 
          <!-- Buttons for adding a new subtask, renaming, and deleting the task -->
          <div class="buttons are-small right">
-            <button class="button is-info is-small" onclick="toggleAddTaskForm('add-subtask-form-{{ item.id }}')">Add Subtask</button>
+            <button class="button is-info is-small" onclick="toggleAddForm('add-subtask-form-{{ item.id }}')">Add Subtask</button>
             <a href="javascript:void(0);" onclick="toggleEditTask('{{ item.id }}')" class="button is-small is-light">Rename</a>
             <form action="{{ url_for('main.delete_task', item_id=item.id) }}" method="post" style="display: inline;">
                 <button type="submit" class="button is-small is-light">Delete</button>

@@ -1,12 +1,17 @@
+{# Extend the base layout template #}
 {% extends 'base.html' %}
 
+{# Content block override from the base template #}
 {% block content %}
 
 <h1 class="title is-2">Welcome, {{ name }}!</h1>
 
+<!-- Container for adding a new list and displaying existing lists -->
 <div class="container">
-    <button class="button is-small is-info" onclick="toggleAddTaskForm('add-task-form')" style="margin-bottom: 20px;">Add New List</button>
+    <!-- Button to trigger the display of the form to add a new list -->
+    <button class="button is-small is-info" onclick="toggleAddForm('add-task-form')" style="margin-bottom: 20px;">Add New List</button>
 
+    <!-- Form for adding a new list, hidden by default -->
     <div id="add-task-form" class="box" style="display: none;">
         <form action="{{ url_for('main.add_list') }}" method="post">
             <div class="field">
@@ -21,97 +26,8 @@
         </form>
     </div>
 
+    <!-- Include the template for displaying lists -->
     {% include 'todo_pages/list.html' %}
 </div>
 
-<script>
-
-
-function toggleAddTaskForm(formId) {
-    var form = document.getElementById(formId);
-    form.style.display = form.style.display === "none" ? "block" : "none";
-}
-
-function toggleEditTask(itemId) {
-    const titleContainer = document.getElementById(`title-container-${itemId}`);
-    const editForm = document.getElementById(`edit-task-form-${itemId}`);
-    if (editForm.style.display === "none") {
-        editForm.style.display = "block";
-        titleContainer.style.display = "none";
-    } else {
-        editForm.style.display = "none";
-        titleContainer.style.display = "block";
-    }
-}
-
-function toggleEditList(listId) {
-    const titleContainer = document.getElementById(`list-title-container-${listId}`);
-    const editForm = document.getElementById(`edit-form-${listId}`);
-    if (editForm.style.display === "none") {
-        editForm.style.display = "block";
-        titleContainer.style.display = "none";
-    } else {
-        editForm.style.display = "none";
-        titleContainer.style.display = "block";
-    }
-}
-
-function allowDrop(ev) {
-    ev.preventDefault();
-    var target = ev.target;
-    while(target && target.getAttribute('data-list-id') === null) {
-        target = target.parentNode;
-        if(target.nodeName === "BODY") {
-            ev.stopPropagation();
-            return false;
-        }
-    }
-}
-
-function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    var target = ev.target;
-    while(target && target.getAttribute('data-list-id') === null) {
-        target = target.parentNode;
-        if(target.nodeName === "BODY") return;
-    }
-
-    var droppedElement = document.getElementById(data);
-    if(target && target.classList.contains('box')) {
-        target.appendChild(droppedElement);
-        var itemId = data.split('-')[1];
-        var newListId = target.getAttribute('data-list-id');
-        fetch('/update_item_position', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({item_id: itemId, new_list_id: newListId}),
-        })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch((error) => console.error('Error:', error));
-    }
-}
-function toggleExpandCollapse(itemId) {
-    fetch(`/toggle-collapse/${itemId}`, { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const subtasks = document.getElementById(`subtasks-${itemId}`);
-                subtasks.style.display = data.is_collapsed ? 'none' : 'block';
-            } else {
-                console.error('Failed to toggle the collapsed state.');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-}
-</script>
-
-{% endblock %} 
+{% endblock %}
