@@ -25,39 +25,34 @@
 </div>
 
 <script>
-function toggleTaskForm(listId) {
-    var formId = listId ? 'add-task-form-' + listId : 'add-task-form';
-    const form = document.getElementById(formId);
-    form.style.display = form.style.display === "none" ? "block" : "none";
+function toggleVisibility(elementId, relatedElementId = null) {
+    const element = document.getElementById(elementId);
+    const relatedElement = relatedElementId ? document.getElementById(relatedElementId) : null;
+
+    if (element) {
+        element.style.display = element.style.display === "none" ? "block" : "none";
+    }
+    
+    if (relatedElement) {
+        relatedElement.style.display = relatedElement.style.display === "none" ? "block" : "none";
+    }
 }
 
+// Example usage for a generic toggle
 function toggleEditTask(itemId) {
-    const titleContainer = document.getElementById(`title-container-${itemId}`);
-    const editForm = document.getElementById(`edit-task-form-${itemId}`);
-    if (editForm.style.display === "none") {
-        editForm.style.display = "block";
-        titleContainer.style.display = "none";
-    } else {
-        editForm.style.display = "none";
-        titleContainer.style.display = "block";
-    }
+    toggleVisibility(`edit-task-form-${itemId}`, `title-container-${itemId}`);
 }
 
 function toggleEditList(listId) {
-    const titleContainer = document.getElementById(`list-title-container-${listId}`);
-    const editForm = document.getElementById(`edit-form-${listId}`);
-    if (editForm.style.display === "none") {
-        editForm.style.display = "block";
-        titleContainer.style.display = "none";
-    } else {
-        editForm.style.display = "none";
-        titleContainer.style.display = "block";
-    }
+    toggleVisibility(`edit-form-${listId}`, `list-title-container-${listId}`);
+}
+
+function toggleTaskForm(listId = '') {
+    toggleVisibility(listId ? 'add-task-form-' + listId : 'add-task-form');
 }
 
 function toggleAddTaskForm(formId) {
-    var form = document.getElementById(formId);
-    form.style.display = form.style.display === "none" ? "block" : "none";
+    toggleVisibility(formId);
 }
 
 
