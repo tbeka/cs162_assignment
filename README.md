@@ -44,7 +44,7 @@ In order to run the app, use the following commands:
 ```
 python3 -m venv venv
 source venv/bin/activate
-cd cs162_assignment-main
+cd path/cs162_assignment-main
 pip3 install -r requirements.txt
 export FLASK_APP=project
 flask run
